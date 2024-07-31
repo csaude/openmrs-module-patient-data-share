@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.openmrs.module.csaude</groupId>
+    <artifactId>pds</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>PDS Module</name>
+    <description>
+        This module allow the sharing of newly created or Updated Patients. The sharing is done trought endpoints
+    </description>
+
+    <url>https://github.com/csaude/openmrs-module-pds.git</url>
+
+    <developers>
+        <developer>
+            <name>CSAUDE-Centro pela Saude Global</name>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>CSAUDE</name>
+        <url>https://github.com/csaude</url>
+    </organization>
+
+    <scm>
+        <connection>scm:git:git@github.com:csaude/openmrs-module-pds.git</connection>
+        <developerConnection>scm:git:git@github.com:csaude/openmrs-module-pds.git</developerConnection>
+        <url>https://github.com/csaude/openmrs-module-pds.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <modules>
+        <module>api</module>
+        <module>omod</module>
+    </modules>
+
+    <properties>
+        <javaCompilerVersion>11</javaCompilerVersion>
+        <openmrsPlatformVersion>2.6.0</openmrsPlatformVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <debeziumVersion>1.0.1-SNAPSHOT</debeziumVersion>
+        <httpclientVersion>4.5.13</httpclientVersion>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.openmrs.api</groupId>
+                <artifactId>openmrs-api</artifactId>
+                <version>${openmrsPlatformVersion}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openmrs.module</groupId>
+                <artifactId>debezium-api</artifactId>
+                <scope>provided</scope>
+                <version>${debeziumVersion}</version>
+            </dependency>
+            
+            <!-- Test dependencies -->
+            <dependency>
+                <groupId>org.openmrs.api</groupId>
+                <artifactId>openmrs-api</artifactId>
+                <version>${openmrsPlatformVersion}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openmrs.test</groupId>
+                <artifactId>openmrs-test</artifactId>
+                <version>${openmrsPlatformVersion}</version>
+                <type>pom</type>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.openmrs.tools</groupId>
+                            <artifactId>openmrs-tools</artifactId>
+                            <version>${openmrsPlatformVersion}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <target>${javaCompilerVersion}</target>
+                        <source>${javaCompilerVersion}</source>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.6</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                    <configuration>
+                        <tagNameFormat>@{project.version}</tagNameFormat>
+                        <arguments>-Dmaven.javadoc.skip=true</arguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <version>2.16.0</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                        <configuration>
+                            <directories>
+                                <directory>.</directory>
+                            </directories>
+                            <configFile>eclipse/OpenMRSFormatter.xml</configFile>
+                            <includes>
+                                <include>**/*.java</include>
+                                <include>**/*.json</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>openmrs-repo</id>
+            <name>OpenMRS Nexus Repository</name>
+            <url>https://openmrs.jfrog.io/artifactory/public/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>openmrs-repo</id>
+            <name>OpenMRS Nexus Repository</name>
+            <url>https://openmrs.jfrog.io/artifactory/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
