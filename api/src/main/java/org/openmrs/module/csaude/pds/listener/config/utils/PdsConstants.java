@@ -1,4 +1,4 @@
-package org.openmrs.module.csaude.pds;
+package org.openmrs.module.csaude.pds.listener.config.utils;
 
 public class PdsConstants {
 	
