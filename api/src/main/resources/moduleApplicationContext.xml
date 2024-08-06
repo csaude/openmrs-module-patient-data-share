@@ -2,7 +2,58 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  		    http://www.springframework.org/schema/context
+  		    https://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="org.openmrs.module.csaude.pds" />
+
+
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="dbSessionFactory" />
+    </bean>
+
+    <bean id="dbSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"/>
+
+    <bean id="serviceInterceptors" class="org.springframework.aop.interceptor.SimpleTraceInterceptor"/>
+
+    <bean id="transactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+
+    <bean id="pds.DemographicDataService"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager" />
+        </property>
+        <property name="target">
+            <bean class="org.openmrs.module.csaude.pds.listener.service.DemographicDataQueueServiceImpl">
+                <property name="dao">
+                    <bean class="org.openmrs.module.csaude.pds.listener.dao.DemographicDataQueueDao">
+                        <property name="sessionFactory">
+                            <ref bean="dbSessionFactory" />
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors" />
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource" />
+        </property>
+    </bean>
+
+    <bean id="serviceContext" class="org.openmrs.api.context.ServiceContext"/>
+
+    <bean parent="serviceContext" >
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.csaude.pds.listener.service.DemographicDataQueueService</value>
+                <ref bean="pds.DemographicDataService" />
+            </list>
+        </property>
+    </bean>
 
 </beans>

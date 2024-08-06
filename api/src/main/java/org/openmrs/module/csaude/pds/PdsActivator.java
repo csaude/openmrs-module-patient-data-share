@@ -23,6 +23,7 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.openmrs.api.APIException;
 import org.openmrs.module.BaseModuleActivator;
+import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
