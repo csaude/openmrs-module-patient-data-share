@@ -8,30 +8,19 @@ import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-
 public class DemographicDataQueueDao extends DaoBase {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PdsEventProcessor.class);
 	
-	public DemographicDataQueue createDemographicDataQueue(DemographicDataQueue demographicDataQueue) {
+	public DemographicDataQueue createDemographicDataQueue(DemographicDataQueue demographicDataQueue) throws RuntimeException {
 		DbSession session = getSession();
 		
 		try {
-			DemographicDataQueue existingDemographicDataQueue = this
-			        .getDemographicDataQueueByUuid(demographicDataQueue.getPatientUuid());
-			if (existingDemographicDataQueue != null) {
-				logger.debug("Patient demographic data already exists, trying to update:  " + "uuid "
-				        + demographicDataQueue.getPatientUuid());
-				existingDemographicDataQueue.setUpdatedAt(LocalDateTime.now());
-				session.update(existingDemographicDataQueue);
-			} else {
-				logger.debug("Creating Patient demographic data:  " + "uuid " + demographicDataQueue.getPatientUuid());
+				logger.debug("Saving Patient demographic data:  " + "uuid " + demographicDataQueue.getPatientUuid());
 				session.saveOrUpdate(demographicDataQueue);
-			}
 		}
 		catch (Exception e) {
-			logger.info(
+			throw new RuntimeException(
 			    "An error occurred saving patient demographic data : " + "uuid " + demographicDataQueue.getPatientUuid(), e);
 		}
 		

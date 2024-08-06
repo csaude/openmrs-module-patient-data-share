@@ -46,7 +46,7 @@ public class PdsEventProcessor extends BaseEventProcessor {
 			}
 		}
 		catch (Exception e) {
-			logger.error("Error processing event -> " + event, e);
+			throw new RuntimeException("Error processing event -> " + event, e);
 		}
 		finally {
 			try {
