@@ -64,7 +64,7 @@ public class DaoBase {
 			if (pagingInfo.shouldLoadRecordCount()) {
 				Projection projection = null;
 				ResultTransformer transformer = null;
-
+				
 				if (criteria instanceof CriteriaImpl) {
 					CriteriaImpl criteriaImpl = (CriteriaImpl) criteria;
 					projection = criteriaImpl.getProjection();

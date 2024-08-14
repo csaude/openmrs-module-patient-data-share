@@ -13,7 +13,7 @@ public class DemographicDataQueue extends LifeCycle {
 	
 	@NotNull
 	@Column(name = "patient_id")
-	private Long patientId;
+	private Integer patientId;
 	
 	@NotNull
 	@Column(name = "patient_uuid")
@@ -22,11 +22,11 @@ public class DemographicDataQueue extends LifeCycle {
 	public DemographicDataQueue() {
 	}
 	
-	public Long getPatientId() {
+	public Integer getPatientId() {
 		return patientId;
 	}
 	
-	public void setPatientId(Long patientId) {
+	public void setPatientId(Integer patientId) {
 		this.patientId = patientId;
 	}
 	

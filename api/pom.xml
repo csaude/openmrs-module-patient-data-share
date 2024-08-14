@@ -24,7 +24,6 @@
             <groupId>org.openmrs.module</groupId>
             <artifactId>debezium-api</artifactId>
         </dependency>
-
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.openmrs.api</groupId>
@@ -36,6 +35,15 @@
             <artifactId>openmrs-test</artifactId>
             <type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.23</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+
     </dependencies>
     <build>
         <resources>
