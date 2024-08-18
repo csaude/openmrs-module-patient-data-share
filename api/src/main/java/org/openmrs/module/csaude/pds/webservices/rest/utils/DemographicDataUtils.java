@@ -41,7 +41,6 @@ public class DemographicDataUtils {
 	private static final DemographicDataQueueService demographicDataQueueService = Context
 	        .getService(DemographicDataQueueService.class);
 	
-
 	public static ResponseDataDTO fetchPatientDemographicData() {
 		try {
 			if (!Context.isSessionOpen()) {
@@ -91,13 +90,13 @@ public class DemographicDataUtils {
 		
 		List<AddressDTO> addressDTOs = getAddress(patient);
 		demographicDataDTO.setAddress(addressDTOs);
-
+		
 		List<NameDTO> nameDTOS = getNames(patient);
 		demographicDataDTO.setName(nameDTOS);
-
+		
 		List<IdentifierDTO> identifierDTOS = getPatientIdentifiers(patient);
 		demographicDataDTO.setIdentifier(identifierDTOS);
-
+		
 		List<TelecomDTO> telecomDTOs = getPhones(patient.getPerson());
 		demographicDataDTO.setTelecom(telecomDTOs);
 		
