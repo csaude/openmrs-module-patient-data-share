@@ -1,6 +1,5 @@
 package org.openmrs.module.csaude.pds.webservices.rest.utils;
 
-import org.apache.kafka.common.errors.ApiException;
 import org.codehaus.plexus.util.StringUtils;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
@@ -19,8 +18,11 @@ import org.openmrs.module.csaude.pds.listener.dto.IdentifierDTO;
 import org.openmrs.module.csaude.pds.listener.dto.NameDTO;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
 import org.openmrs.module.csaude.pds.listener.dto.TelecomDTO;
+import org.openmrs.module.csaude.pds.listener.entity.ClientName;
+import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.openmrs.module.csaude.pds.listener.service.DemographicDataQueueService;
+import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceNotFoundException;
 import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,34 +42,38 @@ public class DemographicDataUtils {
 	
 	private static final DemographicDataQueueService demographicDataQueueService = Context
 	        .getService(DemographicDataQueueService.class);
+
+	private static final String START_DATE = "start";
+	private static final String END_DATE = "end";
 	
-	public static ResponseDataDTO fetchPatientDemographicData() {
+	public static ResponseDataDTO fetchPatientDemographicData(String count, String client) {
+		ClientName clientName = ClientName.fromName(client);
+		DemographicDataOffset demographicDataOffset = demographicDataQueueService.getDemographicDataOffset(clientName);
+		if (demographicDataOffset == null) {
+			demographicDataOffset = new DemographicDataOffset();
+			demographicDataOffset.setClientName(clientName);
+		}
+		
 		try {
-			if (!Context.isSessionOpen()) {
-				Context.openSession();
-				Context.addProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
-				Context.addProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
-				
-				logger.debug("Session opened before executing PatientService method.");
+			openSessionWithPrivileges();
+
+			List<DemographicDataQueue> demographicData = demographicDataQueueService
+			        .getAllDemographicDataQueues(Integer.valueOf(count), demographicDataOffset);
+			
+			if (demographicData.isEmpty()) {
+				throw new ResourceNotFoundException("No demographic data found for client: " + client);
 			}
-			List<DemographicDataQueue> demographicData = demographicDataQueueService.getAllDemographicDataQueues();
 			Set<Integer> ids = demographicData.stream().map(DemographicDataQueue::getPatientId).collect(Collectors.toSet());
 			List<Integer> idsAsSet = new ArrayList<>(ids);
 			Set<Patient> patients = demographicDataQueueService.getPatientsByIds(idsAsSet);
 			
+			demographicDataOffset.setOffsetId(demographicData.get(demographicData.size() - 1));
+			demographicDataQueueService.updateOrSaveDemographicOffset(demographicDataOffset);
+			
 			return createResponseDataDTO(patients);
 		}
-		catch (Exception e) {
-			throw new ApiException(e);
-		}
 		finally {
-			if (Context.isSessionOpen()) {
-				Context.removeProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
-				Context.removeProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
-				Context.closeSession();
-				
-				logger.debug("Session closed after executing PatientService method.");
-			}
+			closeSessionWithPrivileges();
 		}
 		
 	}
@@ -122,8 +128,8 @@ public class DemographicDataUtils {
 			
 			Map<String, String> period = new HashMap<>();
 			if (personAddress.getStartDate() != null && personAddress.getEndDate() != null) {
-				period.put("start", personAddress.getStartDate().toString());
-				period.put("end", personAddress.getEndDate().toString());
+				period.put(START_DATE, personAddress.getStartDate().toString());
+				period.put(END_DATE, personAddress.getEndDate().toString());
 				addressDTO.setPeriod(period);
 			}
 			
@@ -251,7 +257,25 @@ public class DemographicDataUtils {
 		
 		return telecomDTO;
 	}
-	
+
+
+	private static void openSessionWithPrivileges() {
+		if (!Context.isSessionOpen()) {
+			Context.openSession();
+			Context.addProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
+			Context.addProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
+			logger.debug("Session opened.");
+		}
+	}
+
+	private static void closeSessionWithPrivileges() {
+		if (Context.isSessionOpen()) {
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
+			Context.removeProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
+			Context.closeSession();
+			logger.debug("Session closed.");
+		}
+	}
 	public enum TelecomType {
 		MOBILE,
 		HOME,

@@ -36,4 +36,31 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
         </createTable>
 
     </changeSet>
+
+    <changeSet author="dchirinda" id="20240815-1100">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="demographic_data_offset"/>
+            </not>
+        </preConditions>
+        <comment>Adding demographic_data_offset table</comment>
+
+        <createTable tableName="demographic_data_offset">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="client_name" type="VARCHAR(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="offset_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="demographic_data_offset"
+                                 baseColumnNames="offset_id"
+                                 referencedTableName="demographic_data_queue"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_demographic_data_offset_to_demographic_data_queue"/>
+
+    </changeSet>
 </databaseChangeLog>

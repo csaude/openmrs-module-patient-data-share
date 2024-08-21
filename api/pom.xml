@@ -41,9 +41,6 @@
             <version>5.3.23</version>
             <scope>provided</scope>
         </dependency>
-
-
-
     </dependencies>
     <build>
         <resources>

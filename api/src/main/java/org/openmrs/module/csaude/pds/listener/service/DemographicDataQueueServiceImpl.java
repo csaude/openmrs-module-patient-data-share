@@ -4,6 +4,8 @@ import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.csaude.pds.listener.dao.DemographicDataQueueDao;
+import org.openmrs.module.csaude.pds.listener.entity.ClientName;
+import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 
 import java.util.List;
@@ -24,8 +26,8 @@ public class DemographicDataQueueServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
-	public DemographicDataQueue createDemographicDataQueue(DemographicDataQueue demographicDataQueue) {
-		return dao.createDemographicDataQueue(demographicDataQueue);
+	public void createDemographicDataQueue(DemographicDataQueue demographicDataQueue) {
+		dao.createDemographicDataQueue(demographicDataQueue);
 	}
 	
 	@Override
@@ -39,7 +41,17 @@ public class DemographicDataQueueServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
-	public List<DemographicDataQueue> getAllDemographicDataQueues() {
-		return dao.getAllDemographicDataQueues();
+	public DemographicDataOffset getDemographicDataOffset(ClientName clientName) {
+		return dao.getDemographicDataOffset(clientName);
+	}
+	
+	@Override
+	public void updateOrSaveDemographicOffset(DemographicDataOffset demographicDataOffset) {
+		dao.updateOrSaveDemographicOffset(demographicDataOffset);
+	}
+	
+	@Override
+	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, DemographicDataOffset offset) {
+		return dao.getAllDemographicDataQueues(count, offset);
 	}
 }

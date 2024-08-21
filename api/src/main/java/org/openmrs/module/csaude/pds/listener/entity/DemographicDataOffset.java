@@ -16,6 +16,7 @@ public class DemographicDataOffset extends Base {
 	
 	@NotNull
 	@Column(name = "client_name")
+	@Enumerated(EnumType.STRING)
 	private ClientName clientName;
 	
 	public DemographicDataOffset() {

@@ -3,6 +3,8 @@ package org.openmrs.module.csaude.pds.listener.service;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.csaude.pds.listener.entity.ClientName;
+import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +14,10 @@ import java.util.Set;
 public interface DemographicDataQueueService extends OpenmrsService {
 	
 	@Transactional
-	DemographicDataQueue createDemographicDataQueue(DemographicDataQueue demographicDataQueue);
+	void createDemographicDataQueue(DemographicDataQueue demographicDataQueue);
 	
 	@Transactional
-	List<DemographicDataQueue> getAllDemographicDataQueues();
+	List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, DemographicDataOffset offsetId);
 	
 	@Transactional
 	List<PersonAttribute> getPersonAttributeByPersonType(String personAttributeTypeUuid, Integer personId);
@@ -23,4 +25,7 @@ public interface DemographicDataQueueService extends OpenmrsService {
 	@Transactional
 	Set<Patient> getPatientsByIds(List<Integer> patientIds);
 	
+	DemographicDataOffset getDemographicDataOffset(ClientName clientName);
+	
+	void updateOrSaveDemographicOffset(DemographicDataOffset demographicDataOffset);
 }

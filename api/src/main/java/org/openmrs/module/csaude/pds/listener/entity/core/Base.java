@@ -44,4 +44,8 @@ public abstract class Base implements Serializable {
 		
 		return true;
 	}
+	
+	public boolean isCreated() {
+		return this.id != null;
+	}
 }
