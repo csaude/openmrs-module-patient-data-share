@@ -7,7 +7,6 @@ import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.db.hibernate.DbSession;
 import org.openmrs.module.csaude.pds.listener.config.PdsEventProcessor;
-import org.openmrs.module.csaude.pds.listener.entity.ClientName;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.slf4j.Logger;
@@ -21,12 +20,11 @@ public class DemographicDataQueueDao extends DaoBase {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PdsEventProcessor.class);
 	
-	public void createDemographicDataQueue(DemographicDataQueue demographicDataQueue)
-	        throws RuntimeException {
+	public void createDemographicDataQueue(DemographicDataQueue demographicDataQueue) throws RuntimeException {
 		DbSession session = getSession();
 		
 		try {
-            logger.debug("Saving Patient demographic data:  uuid {} ", demographicDataQueue.getPatientUuid());
+			logger.debug("Saving Patient demographic data:  uuid {} ", demographicDataQueue.getPatientUuid());
 			session.saveOrUpdate(demographicDataQueue);
 		}
 		catch (Exception e) {
@@ -34,7 +32,7 @@ public class DemographicDataQueueDao extends DaoBase {
 			        "An error occurred saving patient demographic data : " + "uuid " + demographicDataQueue.getPatientUuid(),
 			        e);
 		}
-
+		
 	}
 	
 	public List<PersonAttribute> getPersonAttributeByPersonType(String personAttributeTypeUuid, Integer personId) {
@@ -48,18 +46,17 @@ public class DemographicDataQueueDao extends DaoBase {
 		
 	}
 	
-	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count,
-	        DemographicDataOffset demographicDataOffset) {
+	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, Integer lastRead) {
 		DbSession session = getSession();
 		Criteria criteria = session.createCriteria(DemographicDataQueue.class);
 		
-		if (demographicDataOffset.isCreated()) {
-			criteria.add(Restrictions.gt("id", demographicDataOffset.getOffsetId().getId()));
+		if (lastRead != null) {
+			criteria.add(Restrictions.gt("id", lastRead));
 		}
 		if (count != null) {
 			criteria.setMaxResults(count);
 		}
-		criteria.add(Restrictions.eq("isActive", true));
+		criteria.add(Restrictions.eq("active", true));
 		criteria.addOrder(Order.asc("id"));
 		
 		return (List<DemographicDataQueue>) criteria.list();
@@ -75,7 +72,7 @@ public class DemographicDataQueueDao extends DaoBase {
 		
 	}
 	
-	public DemographicDataOffset getDemographicDataOffset(ClientName clientName) {
+	public DemographicDataOffset getDemographicDataOffset(String clientName) {
 		DbSession session = getSession();
 		Criteria criteria = session.createCriteria(DemographicDataOffset.class, "offset");
 		criteria.add(Restrictions.eq("offset.clientName", clientName));
@@ -88,7 +85,8 @@ public class DemographicDataQueueDao extends DaoBase {
 		
 		try {
 			
-			logger.debug("Saving Patient demographic offset: {} for client: {}", demographicDataOffset.getOffsetId(),
+			logger.debug("Saving Patient demographic offset: {} for client: {}",
+			    " Start from " + demographicDataOffset.getFirstRead() + "to " + demographicDataOffset.getLastRead(),
 			    demographicDataOffset.getClientName());
 			if (demographicDataOffset.isCreated()) {
 				session.update(demographicDataOffset);
@@ -97,8 +95,9 @@ public class DemographicDataQueueDao extends DaoBase {
 			}
 		}
 		catch (Exception e) {
-			throw new RuntimeException("An error occurred saving patient demographic offset : "
-			        + demographicDataOffset.getOffsetId() + " for client: " + demographicDataOffset.getClientName(), e);
+			throw new RuntimeException("An error occurred saving patient demographic offset : " + " Start from "
+			        + demographicDataOffset.getFirstRead() + "to " + demographicDataOffset.getLastRead() + " for client: "
+			        + demographicDataOffset.getClientName(), e);
 		}
 		
 	}

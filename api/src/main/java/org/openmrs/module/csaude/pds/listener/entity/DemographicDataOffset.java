@@ -10,31 +10,41 @@ import javax.persistence.*;
 public class DemographicDataOffset extends Base {
 	
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "offset_id")
-	private DemographicDataQueue offsetId;
+	@Column(name = "first_read")
+	private Integer firstRead;
+	
+	@NotNull
+	@Column(name = "last_read")
+	private Integer lastRead;
 	
 	@NotNull
 	@Column(name = "client_name")
-	@Enumerated(EnumType.STRING)
-	private ClientName clientName;
+	private String clientName;
 	
 	public DemographicDataOffset() {
 	}
 	
-	public DemographicDataQueue getOffsetId() {
-		return offsetId;
-	}
-	
-	public void setOffsetId(DemographicDataQueue offsetId) {
-		this.offsetId = offsetId;
-	}
-	
-	public ClientName getClientName() {
+	public String getClientName() {
 		return clientName;
 	}
 	
-	public void setClientName(ClientName clientName) {
+	public void setClientName(String clientName) {
 		this.clientName = clientName;
+	}
+	
+	public Integer getFirstRead() {
+		return firstRead;
+	}
+	
+	public void setFirstRead(Integer firstRead) {
+		this.firstRead = firstRead;
+	}
+	
+	public Integer getLastRead() {
+		return lastRead;
+	}
+	
+	public void setLastRead(Integer lastRead) {
+		this.lastRead = lastRead;
 	}
 }

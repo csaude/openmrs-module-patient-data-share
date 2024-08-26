@@ -18,10 +18,11 @@ import org.openmrs.module.csaude.pds.listener.dto.IdentifierDTO;
 import org.openmrs.module.csaude.pds.listener.dto.NameDTO;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
 import org.openmrs.module.csaude.pds.listener.dto.TelecomDTO;
-import org.openmrs.module.csaude.pds.listener.entity.ClientName;
+import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.openmrs.module.csaude.pds.listener.service.DemographicDataQueueService;
+import org.openmrs.module.csaude.pds.webservices.rest.controller.DemographicDataController;
 import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceNotFoundException;
 import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
@@ -42,23 +43,34 @@ public class DemographicDataUtils {
 	
 	private static final DemographicDataQueueService demographicDataQueueService = Context
 	        .getService(DemographicDataQueueService.class);
-
+	
 	private static final String START_DATE = "start";
+	
 	private static final String END_DATE = "end";
 	
-	public static ResponseDataDTO fetchPatientDemographicData(String count, String client) {
-		ClientName clientName = ClientName.fromName(client);
+	public static ResponseDataDTO fetchPatientDemographicData(String count, String client,
+	        DemographicDataController.RequestType requestType) {
+		String clientName = ClientNameManager.fromName(client);
 		DemographicDataOffset demographicDataOffset = demographicDataQueueService.getDemographicDataOffset(clientName);
-		if (demographicDataOffset == null) {
-			demographicDataOffset = new DemographicDataOffset();
-			demographicDataOffset.setClientName(clientName);
+		
+		List<DemographicDataQueue> demographicData = List.of();
+		
+		if (demographicDataOffset != null && requestType.equals(DemographicDataController.RequestType.GET)) {
+			demographicData = demographicDataQueueService.getAllDemographicDataQueues(Integer.valueOf(count),
+			    demographicDataOffset.getFirstRead());
+			
+		} else if (requestType.equals(DemographicDataController.RequestType.POST)) {
+			if (demographicDataOffset == null) {
+				throw new ResourceNotFoundException("DemographicDataOffset is null");
+			}
+			demographicData = demographicDataQueueService.getAllDemographicDataQueues(Integer.valueOf(count),
+			    demographicDataOffset.getLastRead());
+		} else {
+			demographicData = demographicDataQueueService.getAllDemographicDataQueues(Integer.valueOf(count), null);
 		}
 		
 		try {
 			openSessionWithPrivileges();
-
-			List<DemographicDataQueue> demographicData = demographicDataQueueService
-			        .getAllDemographicDataQueues(Integer.valueOf(count), demographicDataOffset);
 			
 			if (demographicData.isEmpty()) {
 				throw new ResourceNotFoundException("No demographic data found for client: " + client);
@@ -67,15 +79,33 @@ public class DemographicDataUtils {
 			List<Integer> idsAsSet = new ArrayList<>(ids);
 			Set<Patient> patients = demographicDataQueueService.getPatientsByIds(idsAsSet);
 			
-			demographicDataOffset.setOffsetId(demographicData.get(demographicData.size() - 1));
-			demographicDataQueueService.updateOrSaveDemographicOffset(demographicDataOffset);
-			
+			updateOffset(clientName, demographicData.get(0).getId(), demographicData.get(demographicData.size() - 1).getId(),
+			    demographicDataOffset, requestType);
 			return createResponseDataDTO(patients);
 		}
 		finally {
 			closeSessionWithPrivileges();
 		}
 		
+	}
+	
+	private static void updateOffset(String clientName, Integer firstRead, Integer lastRead,
+	        DemographicDataOffset demographicDataOffset, DemographicDataController.RequestType requestType) {
+		if (requestType.equals(DemographicDataController.RequestType.GET)) {
+			if (demographicDataOffset == null) {
+				demographicDataOffset = new DemographicDataOffset();
+				demographicDataOffset.setClientName(clientName);
+				demographicDataOffset.setFirstRead(firstRead);
+				demographicDataOffset.setLastRead(lastRead);
+				demographicDataQueueService.updateOrSaveDemographicOffset(demographicDataOffset);
+				
+			}
+			return;
+		}
+		
+		demographicDataOffset.setFirstRead(firstRead);
+		demographicDataOffset.setLastRead(lastRead);
+		demographicDataQueueService.updateOrSaveDemographicOffset(demographicDataOffset);
 	}
 	
 	public static ResponseDataDTO createResponseDataDTO(Set<Patient> patients) {
@@ -257,8 +287,7 @@ public class DemographicDataUtils {
 		
 		return telecomDTO;
 	}
-
-
+	
 	private static void openSessionWithPrivileges() {
 		if (!Context.isSessionOpen()) {
 			Context.openSession();
@@ -267,7 +296,7 @@ public class DemographicDataUtils {
 			logger.debug("Session opened.");
 		}
 	}
-
+	
 	private static void closeSessionWithPrivileges() {
 		if (Context.isSessionOpen()) {
 			Context.removeProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
@@ -276,6 +305,7 @@ public class DemographicDataUtils {
 			logger.debug("Session closed.");
 		}
 	}
+	
 	public enum TelecomType {
 		MOBILE,
 		HOME,

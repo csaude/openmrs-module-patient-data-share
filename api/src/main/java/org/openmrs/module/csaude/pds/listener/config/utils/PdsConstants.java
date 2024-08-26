@@ -15,4 +15,8 @@ public class PdsConstants {
 	
 	public final static String GP_IDENTIFIER_TYPE_SYSTEM_MAP = MODULE_ID + ".identifier.type.system.uri.mappings";
 	
+	public final static String GP_DEFAULT_COUNT_FOR_PATIENT_SERVICES = MODULE_ID + ".patient.default.count";
+	
+	public final static String GP_CLIENT_NAMES = MODULE_ID + ".patient.client.names";
+	
 }
