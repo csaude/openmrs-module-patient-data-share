@@ -20,11 +20,11 @@ public class ClientNameManager {
 	
 	public static void loadClientNames() {
 		String namesFromProperties = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_CLIENT_NAMES);
-		if(!Strings.isBlank(namesFromProperties)) {
+		if (!Strings.isBlank(namesFromProperties)) {
 			String[] clientNameArray = namesFromProperties.split(",");
 			Collections.addAll(clientNames, clientNameArray);
 		}
-
+		
 	}
 	
 	public static boolean isValidClientName(String clientName) {
