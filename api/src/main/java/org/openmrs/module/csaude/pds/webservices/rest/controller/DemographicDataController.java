@@ -1,10 +1,12 @@
 package org.openmrs.module.csaude.pds.webservices.rest.controller;
 
 import org.apache.commons.lang.StringUtils;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
+import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
 import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceMissingParameterException;
 import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceUnauthorizedException;
 import org.openmrs.module.csaude.pds.webservices.rest.utils.DemographicDataUtils;
@@ -24,41 +26,44 @@ public class DemographicDataController {
 	
 	@GetMapping("/info/updated-data")
 	public ResponseEntity<?> getUpdateDemographicData(@RequestParam Map<String, String> params) {
-		
-		return getResponseEntity(params, RequestType.GET);
-	}
-	
-	/*
-	Get created or Update patient based in the count
-	*/
-	@PostMapping("/info/updated-data")
-	public ResponseEntity<?> getUpdateDemographicDataAndCommitOffset(@RequestParam Map<String, String> params) {
-		
-		return getResponseEntity(params, RequestType.POST);
-	}
-	
-	private ResponseEntity<?> getResponseEntity(@RequestParam Map<String, String> params, RequestType requestType) {
-		String count = params.get("count");
-		if (StringUtils.isBlank(count)) {
-			count = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_DEFAULT_COUNT_FOR_PATIENT_SERVICES);
-		}
-		String clientName = params.get("client_name");
-		
-		if (Context.getAuthenticatedUser() == null) {
-			throw new ResourceUnauthorizedException("");
-		}
-		
-		if (StringUtils.isBlank(count) || StringUtils.isBlank(clientName)) {
-			throw new ResourceMissingParameterException("The are missing parameters in the request: clientName or count");
-		}
-		
-		ResponseDataDTO responseDataDTO = DemographicDataUtils.fetchPatientDemographicData(count, clientName, requestType);
-		
+
+		String count = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_DEFAULT_COUNT_FOR_PATIENT_SERVICES);
+		String clientName = ClientNameManager.fromName(params.get("client_name"));
+		validateUserAccess(count, clientName);
+
+		ResponseDataDTO responseDataDTO = DemographicDataUtils.fetchPatientDemographicData(count, clientName);
+
 		return new ResponseEntity<>(responseDataDTO, HttpStatus.OK);
 	}
-	
-	public enum RequestType {
-		GET,
-		POST;
+
+	/*
+	Commit offset for data posted by services
+	*/
+	@PostMapping("/info/updated-data")
+	public ResponseEntity<?> commitOffset(@RequestParam Map<String, String> params) {
+
+		String count = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_DEFAULT_COUNT_FOR_PATIENT_SERVICES);
+		String clientName = ClientNameManager.fromName(params.get("client_name"));
+
+		validateUserAccess(count, clientName);
+		DemographicDataUtils.commitOffset(clientName);
+		return ResponseEntity.noContent().build();
+	}
+
+	private void validateUserAccess(String count, String clientName) {
+
+		User user = Context.getAuthenticatedUser();
+
+		if (StringUtils.isBlank(count) || StringUtils.isBlank(clientName)) {
+			throw new ResourceMissingParameterException("The are missing parameters in the request: clientName");
+		}
+
+		if (user == null) {
+			throw new ResourceUnauthorizedException("");
+		}
+
+		if(!user.getUsername().equals(clientName)){
+			throw new ResourceUnauthorizedException("");
+		}
 	}
 }

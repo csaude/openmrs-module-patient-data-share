@@ -16,7 +16,7 @@ public interface DemographicDataQueueService extends OpenmrsService {
 	void createDemographicDataQueue(DemographicDataQueue demographicDataQueue);
 	
 	@Transactional
-	List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, Integer lastRead);
+	List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, DemographicDataOffset demographicDataOffset);
 	
 	@Transactional
 	List<PersonAttribute> getPersonAttributeByPersonType(String personAttributeTypeUuid, Integer personId);

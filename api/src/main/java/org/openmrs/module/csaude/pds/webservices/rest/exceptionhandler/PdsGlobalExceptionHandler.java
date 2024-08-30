@@ -29,4 +29,11 @@ public class PdsGlobalExceptionHandler {
 		        "Invalid or missing authorization token.", HttpStatus.UNAUTHORIZED.value());
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
+
+	@ExceptionHandler(ResourceNotAllowedException.class)
+	public ResponseEntity<?> handlePermittedResource(ResourceUnauthorizedException ex, WebRequest request) {
+		ErrorDetails errorDetails = new ErrorDetails(ErrorCode.UNAUTHORIZED.toString(),
+				"The client name is not parameterized to access the resource.", HttpStatus.UNAUTHORIZED.value());
+		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
+	}
 }

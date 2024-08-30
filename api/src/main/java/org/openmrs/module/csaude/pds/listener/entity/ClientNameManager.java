@@ -14,7 +14,6 @@ public class ClientNameManager {
 	private static Set<String> clientNames = new HashSet<>();
 	
 	static {
-		clientNames.add("IDMED");
 		loadClientNames();
 	}
 	
@@ -28,7 +27,7 @@ public class ClientNameManager {
 	}
 	
 	public static boolean isValidClientName(String clientName) {
-		return clientNames.contains(clientName.toUpperCase());
+		return clientName !=null && clientNames.contains(clientName.toUpperCase());
 	}
 	
 	public static String fromName(String name) {

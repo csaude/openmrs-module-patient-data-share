@@ -6,7 +6,6 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.db.hibernate.DbSession;
-import org.openmrs.module.csaude.pds.listener.config.PdsEventProcessor;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import java.util.Set;
 
 public class DemographicDataQueueDao extends DaoBase {
 	
-	private static final Logger logger = LoggerFactory.getLogger(PdsEventProcessor.class);
+	private static final Logger logger = LoggerFactory.getLogger(DemographicDataQueueDao.class);
 	
 	public void createDemographicDataQueue(DemographicDataQueue demographicDataQueue) throws RuntimeException {
 		DbSession session = getSession();
@@ -46,12 +45,12 @@ public class DemographicDataQueueDao extends DaoBase {
 		
 	}
 	
-	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, Integer lastRead) {
+	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, DemographicDataOffset demographicDataOffset) {
 		DbSession session = getSession();
 		Criteria criteria = session.createCriteria(DemographicDataQueue.class);
 		
-		if (lastRead != null) {
-			criteria.add(Restrictions.gt("id", lastRead));
+		if (demographicDataOffset != null) {
+			criteria.add(Restrictions.gt("id", demographicDataOffset.getFirstRead()));
 		}
 		if (count != null) {
 			criteria.setMaxResults(count);

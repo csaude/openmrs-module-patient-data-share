@@ -3,7 +3,9 @@ package org.openmrs.module.csaude.pds.listener.entity;
 import com.sun.istack.NotNull;
 import org.openmrs.module.csaude.pds.listener.entity.core.Base;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "demographic_data_offset")
