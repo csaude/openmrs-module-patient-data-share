@@ -5,6 +5,7 @@ import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceMissingParameterException;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,9 +22,8 @@ public class ClientNameManager {
 		String namesFromProperties = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_CLIENT_NAMES);
 		if (!Strings.isBlank(namesFromProperties)) {
 			String[] clientNameArray = namesFromProperties.split(",");
-			Collections.addAll(clientNames, clientNameArray);
+			Arrays.stream(clientNameArray).map(String::toUpperCase).forEach(clientNames::add);
 		}
-		
 	}
 	
 	public static boolean isValidClientName(String clientName) {

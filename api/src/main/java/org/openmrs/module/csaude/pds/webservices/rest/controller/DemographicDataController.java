@@ -8,6 +8,7 @@ import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
 import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
 import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceMissingParameterException;
+import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceNotAllowedException;
 import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceUnauthorizedException;
 import org.openmrs.module.csaude.pds.webservices.rest.utils.DemographicDataUtils;
 import org.springframework.http.HttpStatus;
@@ -62,8 +63,8 @@ public class DemographicDataController {
 			throw new ResourceUnauthorizedException("");
 		}
 		
-		if (!user.getUsername().equals(clientName)) {
-			throw new ResourceUnauthorizedException("");
+		if (!user.getUsername().toUpperCase().equals(clientName)) {
+			throw new ResourceNotAllowedException(clientName);
 		}
 	}
 }
