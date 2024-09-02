@@ -45,7 +45,8 @@ public class DemographicDataQueueDao extends DaoBase {
 		
 	}
 	
-	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, DemographicDataOffset demographicDataOffset) {
+	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count,
+	        DemographicDataOffset demographicDataOffset) {
 		DbSession session = getSession();
 		Criteria criteria = session.createCriteria(DemographicDataQueue.class);
 		

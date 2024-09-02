@@ -50,7 +50,8 @@ public class DemographicDataQueueServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
-	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count, DemographicDataOffset demographicDataOffset) {
+	public List<DemographicDataQueue> getAllDemographicDataQueues(Integer count,
+	        DemographicDataOffset demographicDataOffset) {
 		return dao.getAllDemographicDataQueues(count, demographicDataOffset);
 	}
 }

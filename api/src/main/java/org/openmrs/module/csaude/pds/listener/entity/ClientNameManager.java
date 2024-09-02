@@ -27,7 +27,7 @@ public class ClientNameManager {
 	}
 	
 	public static boolean isValidClientName(String clientName) {
-		return clientName !=null && clientNames.contains(clientName.toUpperCase());
+		return clientName != null && clientNames.contains(clientName.toUpperCase());
 	}
 	
 	public static String fromName(String name) {

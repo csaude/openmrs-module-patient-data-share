@@ -46,37 +46,38 @@ public class DemographicDataUtils {
 	private static final String START_DATE = "start";
 	
 	private static final String END_DATE = "end";
-
+	
 	public static ResponseDataDTO fetchPatientDemographicData(String count, String clientName) {
-
-
+		
 		DemographicDataOffset demographicDataOffset = demographicDataQueueService.getDemographicDataOffset(clientName);
-
+		
 		List<DemographicDataQueue> demographicData = List.of();
-
+		
 		demographicData = demographicDataQueueService.getAllDemographicDataQueues(Integer.valueOf(count),
-					demographicDataOffset);
-
+		    demographicDataOffset);
+		
 		try {
 			openSessionWithPrivileges();
-
+			
 			if (demographicData.isEmpty()) {
 				throw new ResourceNotFoundException("No demographic data found for client: " + clientName);
 			}
 			Set<Integer> ids = demographicData.stream().map(DemographicDataQueue::getPatientId).collect(Collectors.toSet());
 			List<Integer> idsAsSet = new ArrayList<>(ids);
 			Set<Patient> patients = demographicDataQueueService.getPatientsByIds(idsAsSet);
-
-			updateLastRead(demographicDataOffset, clientName, demographicData.get(0).getId(), demographicData.get(demographicData.size() - 1).getId());
+			
+			updateLastRead(demographicDataOffset, clientName, demographicData.get(0).getId(),
+			    demographicData.get(demographicData.size() - 1).getId());
 			return createResponseDataDTO(patients);
 		}
 		finally {
 			closeSessionWithPrivileges();
 		}
 	}
-
-	private static void updateLastRead(DemographicDataOffset demographicDataOffset, String clientName, Integer firstRead, Integer lastRead) {
-		if(demographicDataOffset == null) {
+	
+	private static void updateLastRead(DemographicDataOffset demographicDataOffset, String clientName, Integer firstRead,
+	        Integer lastRead) {
+		if (demographicDataOffset == null) {
 			demographicDataOffset = new DemographicDataOffset();
 			demographicDataOffset.setFirstRead(firstRead);
 			demographicDataOffset.setLastRead(lastRead);
@@ -86,12 +87,12 @@ public class DemographicDataUtils {
 		}
 		demographicDataQueueService.updateOrSaveDemographicOffset(demographicDataOffset);
 	}
-
+	
 	public static void commitOffset(String client) {
 		String clientName = ClientNameManager.fromName(client);
 		DemographicDataOffset demographicDataOffset = demographicDataQueueService.getDemographicDataOffset(clientName);
-
-		if(demographicDataOffset == null) {
+		
+		if (demographicDataOffset == null) {
 			throw new ResourceNotFoundException("No demographic data found for client: " + client);
 		}
 		demographicDataOffset.setFirstRead(demographicDataOffset.getLastRead());
