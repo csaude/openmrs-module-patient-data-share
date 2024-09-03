@@ -11,11 +11,9 @@ import javax.persistence.Table;
 @Table(name = "demographic_data_offset")
 public class DemographicDataOffset extends Base {
 	
-	@NotNull
 	@Column(name = "first_read")
 	private Integer firstRead;
 	
-	@NotNull
 	@Column(name = "last_read")
 	private Integer lastRead;
 	

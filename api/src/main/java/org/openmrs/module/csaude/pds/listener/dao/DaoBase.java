@@ -6,7 +6,7 @@ import org.openmrs.api.db.hibernate.DbSessionFactory;
 public class DaoBase {
 	
 	protected DbSessionFactory sessionFactory;
-	
+
 	public void setSessionFactory(DbSessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}

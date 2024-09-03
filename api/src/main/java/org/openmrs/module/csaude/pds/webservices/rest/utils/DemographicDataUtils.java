@@ -51,10 +51,8 @@ public class DemographicDataUtils {
 		
 		DemographicDataOffset demographicDataOffset = demographicDataQueueService.getDemographicDataOffset(clientName);
 		
-		List<DemographicDataQueue> demographicData = List.of();
-		
-		demographicData = demographicDataQueueService.getAllDemographicDataQueues(Integer.valueOf(count),
-		    demographicDataOffset);
+		List<DemographicDataQueue> demographicData = demographicDataQueueService
+		        .getAllDemographicDataQueues(Integer.valueOf(count), demographicDataOffset);
 		
 		try {
 			openSessionWithPrivileges();
@@ -89,15 +87,24 @@ public class DemographicDataUtils {
 	}
 	
 	public static void commitOffset(String client) {
+		
 		String clientName = ClientNameManager.fromName(client);
 		DemographicDataOffset demographicDataOffset = demographicDataQueueService.getDemographicDataOffset(clientName);
 		
 		if (demographicDataOffset == null) {
-			throw new ResourceNotFoundException("No demographic data found for client: " + client);
+			noPageFoundMessage(clientName);
+		}
+		
+		if (demographicDataOffset.getLastRead() == null) {
+			noPageFoundMessage(clientName);
 		}
 		demographicDataOffset.setFirstRead(demographicDataOffset.getLastRead());
-		demographicDataOffset.setLastRead(0);
+		demographicDataOffset.setLastRead(null);
 		demographicDataQueueService.updateOrSaveDemographicOffset(demographicDataOffset);
+	}
+	
+	private static void noPageFoundMessage(String clientName) {
+		throw new ResourceNotFoundException("No demographic data found for client: " + clientName);
 	}
 	
 	public static ResponseDataDTO createResponseDataDTO(Set<Patient> patients) {
@@ -291,9 +298,14 @@ public class DemographicDataUtils {
 	
 	private static void closeSessionWithPrivileges() {
 		if (Context.isSessionOpen()) {
-			Context.removeProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
-			Context.removeProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
-			Context.closeSession();
+			try {
+				Context.removeProxyPrivilege(PrivilegeConstants.GET_PERSON_ATTRIBUTE_TYPES);
+				Context.removeProxyPrivilege(PrivilegeConstants.GET_PATIENTS);
+			}
+			finally {
+				Context.clearSession();
+				Context.closeSession();
+			}
 			logger.debug("Session closed.");
 		}
 	}

@@ -1,6 +1,7 @@
 package org.openmrs.module.csaude.pds.listener.dao;
 
 import org.hibernate.Criteria;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
@@ -11,6 +12,7 @@ import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Query;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,24 +83,36 @@ public class DemographicDataQueueDao extends DaoBase {
 	}
 	
 	public void updateOrSaveDemographicOffset(DemographicDataOffset demographicDataOffset) {
-		DbSession session = getSession();
 		
+		Transaction transaction = null;
 		try {
+			DbSession session = getSession();
+			transaction = session.beginTransaction();
 			
 			logger.debug("Saving Patient demographic offset: {} for client: {}",
 			    " Start from " + demographicDataOffset.getFirstRead() + "to " + demographicDataOffset.getLastRead(),
 			    demographicDataOffset.getClientName());
+			
 			if (demographicDataOffset.isCreated()) {
-				session.update(demographicDataOffset);
+				
+				Query query = session.createQuery(
+				    "UPDATE DemographicDataOffset SET firstRead=:firstRead, lastRead=:lastRead WHERE id = :id");
+				query.setParameter("firstRead", demographicDataOffset.getFirstRead());
+				query.setParameter("lastRead", demographicDataOffset.getLastRead());
+				query.setParameter("id", demographicDataOffset.getId());
+				query.executeUpdate();
 			} else {
 				session.save(demographicDataOffset);
 			}
+			transaction.commit();
 		}
 		catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			throw new RuntimeException("An error occurred saving patient demographic offset : " + " Start from "
 			        + demographicDataOffset.getFirstRead() + "to " + demographicDataOffset.getLastRead() + " for client: "
 			        + demographicDataOffset.getClientName(), e);
 		}
-		
 	}
 }
