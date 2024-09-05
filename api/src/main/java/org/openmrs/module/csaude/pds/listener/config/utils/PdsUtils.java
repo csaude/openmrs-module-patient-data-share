@@ -1,12 +1,17 @@
 package org.openmrs.module.csaude.pds.listener.config.utils;
 
+import org.apache.commons.lang3.StringUtils;
+import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.debezium.DatabaseEvent;
 import org.openmrs.module.debezium.DatabaseOperation;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,5 +43,33 @@ public class PdsUtils {
 		}
 		
 		return Integer.valueOf(patientId.toString());
+	}
+	
+	/**
+	 * Retrieves the value of a global property with the specified name
+	 *
+	 * @param gpName the global property name
+	 * @return the global property value
+	 */
+	public static String getGlobalPropertyValue(String gpName) {
+		String value = Context.getAdministrationService().getGlobalProperty(gpName);
+		if (StringUtils.isBlank(value)) {
+			throw new APIException("No value set for the global property named: " + gpName);
+		}
+		
+		return value;
+	}
+	
+	public static String getPatientIdentifierUri(String patientIdentifierUuid) {
+		Map idSystemMap = new HashMap();
+		String maps = getGlobalPropertyValue(PdsConstants.GP_IDENTIFIER_TYPE_SYSTEM_MAP);
+		if (StringUtils.isNotBlank(maps)) {
+			for (String map : maps.trim().split(",")) {
+				String[] details = map.trim().split("\\^");
+				idSystemMap.put(details[0].trim(), details[1].trim());
+			}
+		}
+		
+		return (String) idSystemMap.get(patientIdentifierUuid);
 	}
 }

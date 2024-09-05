@@ -32,9 +32,9 @@ public class PdsEventProcessor extends BaseEventProcessor {
 			}
 			
 			Person person = personService.getPerson(PdsUtils.getPersonId(event));
-			if (person != null) {
+			if (person != null && person.getIsPatient()) {
 				DemographicDataQueue demographicDataQueue = new DemographicDataQueue();
-				demographicDataQueue.setPatientId(Long.valueOf(person.getPersonId()));
+				demographicDataQueue.setPatientId(person.getPersonId());
 				demographicDataQueue.setPatientUuid(person.getUuid());
 				demographicDataQueue.setCreatedAt(new Date());
 				demographicDataQueue.setActive(Boolean.TRUE);

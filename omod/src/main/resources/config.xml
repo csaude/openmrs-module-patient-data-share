@@ -22,6 +22,46 @@
     </require_modules>
     
     <!-- Global properties -->
+	<globalProperty>
+		<property>${project.parent.artifactId}.person.attribute.type.mobile.phone</property>
+		<description>
+			Specifies the uuid of the person attribute type for mobile phone number
+		</description>
+		<defaultValue>e2e3fd64-1d5f-11e0-b929-000c29ad1d07</defaultValue>
+	</globalProperty>
+
+	<globalProperty>
+		<property>${project.parent.artifactId}.person.attribute.type.home.phone</property>
+		<description>
+			Specifies the uuid of the person attribute type for home phone number
+		</description>
+		<defaultValue>e6c97a9d-a77b-401f-b06e-81900e21ed1d</defaultValue>
+	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.identifier.type.system.uri.mappings</property>
+		<description>
+			Comma-separated list of mappings between OpenMRS patient identifier type uuids and system URIs
+			(identifier type namespaces), should be of the form identifierTypeUuid-1^systemUri1,identifierTypeUuid-2^systemUri2.
+			The system URI values MUST match the URI values defined for the respective patient identifier types in the
+			OpenCR config file under the systems section. The system URI for the NID patient identifier typecL MUST also
+			match the values used in the OpenCR PatientRelationship.json and decisionRules.json files.
+		</description>
+		<defaultValue>8d793bee-c2cc-11de-8d13-0010c6dffd0f^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/openmrs-num, e2b966d0-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/nid-tarv, e2b9682e-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/bi, e2b9698c-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/cdg-ats, e2b96ad6-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/cdg-ptv-pre-natal, e2b96c16-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/cdg-its, e2b96d56-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/cdg-ptc-maternidade, e2b97b70-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/nid-ccr, e2b97cec-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/pcr-num-reg, e2b97e40-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/nit-tb, e2b97f8a-1d5f-11e0-b929-000c29ad1d07^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/num-cancro-cervical, e89c8925-35cc-4a29-9002-6b36bf3fd47f^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/nuic, 79ad599a-50df-48f8-865c-0095ec9a9d01^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/nid-disa, 1c72703d-fb55-439e-af4f-ef39a1049e19^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/cram-id, bce7c891-27e9-42ec-abb0-aec3a641175e^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/nid-prep, a5d38e09-efcb-4d91-a526-50ce1ba5011a^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/openempi-id, 05a29f94-c0ed-11e2-94be-8c13b969e334^http://metadata.epts.e-saude.net/dictionary/patient-identifiers/openmrs-id</defaultValue>
+	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.patient.default.count</property>
+		<description>
+			Specifies the default value to be returned by the services
+		</description>
+		<defaultValue>100</defaultValue>
+	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.patient.client.names</property>
+		<description>
+			Specifies the client names to benefit from resources exposed by the application. The list has to be separated by ','.
+			Ex: CLIENT_1,CLIENT_2
+		</description>
+	</globalProperty>
     <!-- Global properties -->
 </module>
 
