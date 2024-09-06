@@ -32,6 +32,12 @@
             <version>${openmrsPlatformVersion}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>debezium-api</artifactId>
+            <scope>runtime</scope>
+            <version>${debeziumVersion}</version>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>
