@@ -72,6 +72,7 @@
 		<description>
 			A required property that specifies the unique id of the database server.
 		</description>
+		<defaultValue>1000</defaultValue>
 	</globalProperty>
 
 	<globalProperty>
@@ -96,11 +97,13 @@
 		<description>
 			A required MySQL specific property that specifies the path to a file where the database history is stored
 		</description>
+		<defaultValue>/usr/local/tomcat/.OpenMRS/debezium/config/history.txt</defaultValue>
 	</globalProperty>
 
 	<globalProperty>
 		<property>debezium.offset.storage.file.filename</property>
 		<description>A required path to file where offsets are to be stored</description>
+		<defaultValue>/usr/local/tomcat/.OpenMRS/debezium/config/offset.txt</defaultValue>
 	</globalProperty>
 
 	<globalProperty>
