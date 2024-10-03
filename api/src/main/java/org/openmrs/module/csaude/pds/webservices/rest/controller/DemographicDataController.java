@@ -40,7 +40,7 @@ public class DemographicDataController {
 	/*
 	Commit offset for data posted by services
 	*/
-	@PostMapping("/info/updated-data")
+	@PostMapping("/info/updated-data/commit")
 	public ResponseEntity<?> commitOffset(@RequestParam Map<String, String> params) {
 		
 		String count = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_DEFAULT_COUNT_FOR_PATIENT_SERVICES);
