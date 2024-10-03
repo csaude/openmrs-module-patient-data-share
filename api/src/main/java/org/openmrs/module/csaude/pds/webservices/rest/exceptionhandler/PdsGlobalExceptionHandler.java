@@ -33,7 +33,7 @@ public class PdsGlobalExceptionHandler {
 	@ExceptionHandler(ResourceNotAllowedException.class)
 	public ResponseEntity<?> handlePermittedResource(ResourceNotAllowedException ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(ErrorCode.UNAUTHORIZED.toString(),
-		        "The client name is not parameterized to access the resource : " + ex.getMessage(),
+		        "The user is not allowed to access the resource of " + ex.getMessage(),
 		        HttpStatus.UNAUTHORIZED.value());
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
