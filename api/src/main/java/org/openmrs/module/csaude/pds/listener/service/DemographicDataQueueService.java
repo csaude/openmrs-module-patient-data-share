@@ -3,10 +3,12 @@ package org.openmrs.module.csaude.pds.listener.service;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -27,4 +29,7 @@ public interface DemographicDataQueueService extends OpenmrsService {
 	DemographicDataOffset getDemographicDataOffset(String clientName);
 	
 	void updateOrSaveDemographicOffset(DemographicDataOffset demographicDataOffset);
+	
+	PatientSateDTO fetchPatientState(Integer patientId) throws IOException;
+	
 }

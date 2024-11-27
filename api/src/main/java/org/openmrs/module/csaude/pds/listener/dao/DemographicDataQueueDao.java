@@ -7,12 +7,17 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.db.hibernate.DbSession;
+import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.Query;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,5 +119,16 @@ public class DemographicDataQueueDao extends DaoBase {
 			        + demographicDataOffset.getFirstRead() + "to " + demographicDataOffset.getLastRead() + " for client: "
 			        + demographicDataOffset.getClientName(), e);
 		}
+	}
+	
+	public PatientSateDTO fetchPatientState(Integer patientId) throws IOException {
+		DbSession session = getSession();
+		Path sqlPath = new ClassPathResource("queries/patient_state.sql").getFile().toPath();
+		String sql = Files.readString(sqlPath);
+		
+		var query = session.createSQLQuery(sql);
+		query.setParameter("patientId", patientId);
+		List<Object> rel = (List<Object>) query.uniqueResult();
+		return null;
 	}
 }

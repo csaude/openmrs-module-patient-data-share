@@ -16,6 +16,7 @@ import org.openmrs.module.csaude.pds.listener.dto.AddressDTO;
 import org.openmrs.module.csaude.pds.listener.dto.DemographicDataDTO;
 import org.openmrs.module.csaude.pds.listener.dto.IdentifierDTO;
 import org.openmrs.module.csaude.pds.listener.dto.NameDTO;
+import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
 import org.openmrs.module.csaude.pds.listener.dto.TelecomDTO;
 import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
@@ -27,6 +28,7 @@ import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -135,8 +137,21 @@ public class DemographicDataUtils {
 		List<TelecomDTO> telecomDTOs = getPhones(patient.getPerson());
 		demographicDataDTO.setTelecom(telecomDTOs);
 		
+		PatientSateDTO patientSateDTO = getPatientStateDTO(patient.getPatientId());
+		
 		return demographicDataDTO;
 		
+	}
+	
+	private static PatientSateDTO getPatientStateDTO(Integer patientId) {
+		PatientSateDTO patientSateDTO = null;
+		try {
+			patientSateDTO = demographicDataQueueService.fetchPatientState(patientId);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return patientSateDTO;
 	}
 	
 	private static List<AddressDTO> getAddress(Patient patient) {
