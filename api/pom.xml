@@ -19,6 +19,7 @@
         <dependency>
             <groupId>org.openmrs.api</groupId>
             <artifactId>openmrs-api</artifactId>
+            <version>${openmrsPlatformVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.openmrs.module</groupId>
