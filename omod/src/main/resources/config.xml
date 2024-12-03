@@ -78,7 +78,7 @@
 		<description>
 			A required property that specifies the unique id of the database server.
 		</description>
-		<defaultValue>1000</defaultValue>
+		<defaultValue>1002</defaultValue>
 	</globalProperty>
 
 	<globalProperty>
