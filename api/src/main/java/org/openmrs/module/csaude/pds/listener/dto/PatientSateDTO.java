@@ -1,18 +1,22 @@
 package org.openmrs.module.csaude.pds.listener.dto;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
+
 public class PatientSateDTO {
 	
-	private Integer patientId;
+	private BigInteger patientId;
 	
-	private String stateData;
+	private Timestamp stateDate;
 	
-	private Integer statePermanenceId;
+	private BigInteger statePermanenceId;
 	
 	private String statePermanenceCode;
 	
-	public PatientSateDTO(Integer patientId, String stateData, Integer statePermanenceId, String statePermanenceCode) {
+	public PatientSateDTO(BigInteger patientId, Timestamp stateData, BigInteger statePermanenceId,
+	    String statePermanenceCode) {
 		this.patientId = patientId;
-		this.stateData = stateData;
+		this.stateDate = stateData;
 		this.statePermanenceId = statePermanenceId;
 		this.statePermanenceCode = statePermanenceCode;
 	}
@@ -20,27 +24,27 @@ public class PatientSateDTO {
 	public PatientSateDTO() {
 	}
 	
-	public Integer getPatientId() {
+	public BigInteger getPatientId() {
 		return patientId;
 	}
 	
-	public void setPatientId(Integer patientId) {
+	public void setPatientId(BigInteger patientId) {
 		this.patientId = patientId;
 	}
 	
-	public String getStateData() {
-		return stateData;
+	public Timestamp getStateDate() {
+		return stateDate;
 	}
 	
-	public void setStateData(String stateData) {
-		this.stateData = stateData;
+	public void setStateDate(Timestamp stateData) {
+		this.stateDate = stateData;
 	}
 	
-	public Integer getStatePermanenceId() {
+	public BigInteger getStatePermanenceId() {
 		return statePermanenceId;
 	}
 	
-	public void setStatePermanenceId(Integer statePermanenceId) {
+	public void setStatePermanenceId(BigInteger statePermanenceId) {
 		this.statePermanenceId = statePermanenceId;
 	}
 	

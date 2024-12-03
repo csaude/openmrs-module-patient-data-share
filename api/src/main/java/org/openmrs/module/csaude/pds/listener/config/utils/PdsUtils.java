@@ -3,14 +3,19 @@ package org.openmrs.module.csaude.pds.listener.config.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.debezium.DatabaseEvent;
 import org.openmrs.module.debezium.DatabaseOperation;
 
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,5 +76,22 @@ public class PdsUtils {
 		}
 		
 		return (String) idSystemMap.get(patientIdentifierUuid);
+	}
+	
+	public static List<PatientSateDTO> getPatientSates(List<Object[]> states) {
+		List<PatientSateDTO> patientSates = new ArrayList<>();
+		if (states != null) {
+			states.forEach(state -> {
+				BigInteger PatientId = state[0] != null ? (BigInteger) state[0] : null;
+				Timestamp stateDate = state[1] != null ? (Timestamp) state[1] : null;
+				BigInteger permanenceStateId = state[2] != null ? (BigInteger) state[2] : null;
+				String permanenceStateCode = state[3] != null ? (String) state[3] : null;
+				
+				PatientSateDTO patientSate = new PatientSateDTO(PatientId, stateDate, permanenceStateId,
+				        permanenceStateCode);
+				patientSates.add(patientSate);
+			});
+		}
+		return patientSates;
 	}
 }

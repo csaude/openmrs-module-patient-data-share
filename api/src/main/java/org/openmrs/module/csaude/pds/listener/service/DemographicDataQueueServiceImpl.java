@@ -52,7 +52,7 @@ public class DemographicDataQueueServiceImpl extends BaseOpenmrsService implemen
 	}
 	
 	@Override
-	public PatientSateDTO fetchPatientState(Integer patientId) throws IOException {
+	public List<PatientSateDTO> fetchPatientState(Integer patientId) throws IOException {
 		return dao.fetchPatientState(patientId);
 	}
 	

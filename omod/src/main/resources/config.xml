@@ -57,8 +57,14 @@
 			Ex: CLIENT_1,CLIENT_2
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.patient.state.url</property>
+		<description>
+			Url of patient state data
+		</description>
+		<defaultValue>http://metadata.epts.e-saude.net/dictionary/patient/clinical/state-code</defaultValue>
+	</globalProperty>
     <!-- Global properties -->
-
 	<!-- Global properties of debezium -->
 	<globalProperty>
 		<property>debezium.engine.enabled</property>

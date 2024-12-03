@@ -138,20 +138,34 @@ public class DemographicDataUtils {
 		demographicDataDTO.setTelecom(telecomDTOs);
 		
 		PatientSateDTO patientSateDTO = getPatientStateDTO(patient.getPatientId());
+		if (patientSateDTO != null) {
+			String patientStateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATA);
+			demographicDataDTO.addPatientState(patientSateDTO, patientStateUrl);
+		}
 		
 		return demographicDataDTO;
-		
 	}
 	
 	private static PatientSateDTO getPatientStateDTO(Integer patientId) {
-		PatientSateDTO patientSateDTO = null;
 		try {
-			patientSateDTO = demographicDataQueueService.fetchPatientState(patientId);
+			List<PatientSateDTO> patientSateDTOs = demographicDataQueueService.fetchPatientState(patientId);
+			if (patientSateDTOs.isEmpty()) {
+				return null;
+			} else {
+				return getMostRecentState(patientSateDTOs);
+			}
 		}
 		catch (IOException e) {
-			throw new RuntimeException(e);
+			logger.error("{} for patientId: {}", e.getMessage(), patientId, e);
+			return null;
 		}
-		return patientSateDTO;
+	}
+	
+	private static PatientSateDTO getMostRecentState(List<PatientSateDTO> patientSates) {
+		return patientSates.stream().filter(patientSateDTO -> patientSateDTO.getStateDate() != null).max(
+		    (patientSateDTO1, patientSateDTO2) -> patientSateDTO1.getStateDate().compareTo(patientSateDTO2.getStateDate()))
+		        .get();
+		
 	}
 	
 	private static List<AddressDTO> getAddress(Patient patient) {

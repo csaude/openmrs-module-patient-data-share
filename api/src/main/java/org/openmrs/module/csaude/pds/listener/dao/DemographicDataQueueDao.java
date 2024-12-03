@@ -7,6 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.db.hibernate.DbSession;
+import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
@@ -121,14 +122,14 @@ public class DemographicDataQueueDao extends DaoBase {
 		}
 	}
 	
-	public PatientSateDTO fetchPatientState(Integer patientId) throws IOException {
+	public List<PatientSateDTO> fetchPatientState(Integer patientId) throws IOException {
 		DbSession session = getSession();
 		Path sqlPath = new ClassPathResource("queries/patient_state.sql").getFile().toPath();
 		String sql = Files.readString(sqlPath);
 		
 		var query = session.createSQLQuery(sql);
 		query.setParameter("patientId", patientId);
-		List<Object> rel = (List<Object>) query.uniqueResult();
-		return null;
+		List<Object[]> rel = query.list();
+		return PdsUtils.getPatientSates(rel);
 	}
 }

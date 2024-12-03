@@ -1,5 +1,6 @@
 package org.openmrs.module.csaude.pds.listener.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DemographicDataDTO {
@@ -23,6 +24,8 @@ public class DemographicDataDTO {
 	private List<AddressDTO> address;
 	
 	private List<TelecomDTO> telecom;
+	
+	private List<ExtensionDTO> extension;
 	
 	public String getResourceType() {
 		return resourceType;
@@ -94,5 +97,20 @@ public class DemographicDataDTO {
 	
 	public void setTelecom(List<TelecomDTO> telecom) {
 		this.telecom = telecom;
+	}
+	
+	public List<ExtensionDTO> getExtension() {
+		return extension;
+	}
+	
+	public void setExtension(List<ExtensionDTO> extension) {
+		this.extension = extension;
+	}
+	
+	public void addPatientState(PatientSateDTO patientSateDTO, String patientStateUrl) {
+		if (this.extension == null) {
+			this.extension = new ArrayList<>();
+		}
+		this.extension.add(new ExtensionDTO(patientStateUrl, patientSateDTO.getStatePermanenceCode()));
 	}
 }

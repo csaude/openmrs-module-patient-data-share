@@ -30,6 +30,6 @@ public interface DemographicDataQueueService extends OpenmrsService {
 	
 	void updateOrSaveDemographicOffset(DemographicDataOffset demographicDataOffset);
 	
-	PatientSateDTO fetchPatientState(Integer patientId) throws IOException;
+	List<PatientSateDTO> fetchPatientState(Integer patientId) throws IOException;
 	
 }
