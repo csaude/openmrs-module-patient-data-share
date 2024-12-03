@@ -16,6 +16,7 @@ import org.openmrs.module.csaude.pds.listener.dto.AddressDTO;
 import org.openmrs.module.csaude.pds.listener.dto.DemographicDataDTO;
 import org.openmrs.module.csaude.pds.listener.dto.IdentifierDTO;
 import org.openmrs.module.csaude.pds.listener.dto.NameDTO;
+import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
 import org.openmrs.module.csaude.pds.listener.dto.TelecomDTO;
 import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
@@ -27,6 +28,7 @@ import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -135,7 +137,34 @@ public class DemographicDataUtils {
 		List<TelecomDTO> telecomDTOs = getPhones(patient.getPerson());
 		demographicDataDTO.setTelecom(telecomDTOs);
 		
+		PatientSateDTO patientSateDTO = getPatientStateDTO(patient.getPatientId());
+		if (patientSateDTO != null) {
+			String patientStateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATA);
+			demographicDataDTO.addPatientState(patientSateDTO, patientStateUrl);
+		}
+		
 		return demographicDataDTO;
+	}
+	
+	private static PatientSateDTO getPatientStateDTO(Integer patientId) {
+		try {
+			List<PatientSateDTO> patientSateDTOs = demographicDataQueueService.fetchPatientState(patientId);
+			if (patientSateDTOs.isEmpty()) {
+				return null;
+			} else {
+				return getMostRecentState(patientSateDTOs);
+			}
+		}
+		catch (IOException e) {
+			logger.error("{} for patientId: {}", e.getMessage(), patientId, e);
+			return null;
+		}
+	}
+	
+	private static PatientSateDTO getMostRecentState(List<PatientSateDTO> patientSates) {
+		return patientSates.stream().filter(patientSateDTO -> patientSateDTO.getStateDate() != null).max(
+		    (patientSateDTO1, patientSateDTO2) -> patientSateDTO1.getStateDate().compareTo(patientSateDTO2.getStateDate()))
+		        .get();
 		
 	}
 	

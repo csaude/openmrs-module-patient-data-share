@@ -4,9 +4,11 @@ import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.csaude.pds.listener.dao.DemographicDataQueueDao;
+import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +49,11 @@ public class DemographicDataQueueServiceImpl extends BaseOpenmrsService implemen
 	@Override
 	public void updateOrSaveDemographicOffset(DemographicDataOffset demographicDataOffset) {
 		dao.updateOrSaveDemographicOffset(demographicDataOffset);
+	}
+	
+	@Override
+	public List<PatientSateDTO> fetchPatientState(Integer patientId) throws IOException {
+		return dao.fetchPatientState(patientId);
 	}
 	
 	@Override

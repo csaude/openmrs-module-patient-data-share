@@ -20,7 +20,7 @@ public class PdsGlobalExceptionHandler {
 	public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(ErrorCode.NOT_FOUND.toString(), "No data found on the current page.",
 		        HttpStatus.NOT_FOUND.value());
-		return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(errorDetails, HttpStatus.NO_CONTENT);
 	}
 	
 	@ExceptionHandler(ResourceUnauthorizedException.class)
@@ -33,8 +33,7 @@ public class PdsGlobalExceptionHandler {
 	@ExceptionHandler(ResourceNotAllowedException.class)
 	public ResponseEntity<?> handlePermittedResource(ResourceNotAllowedException ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(ErrorCode.UNAUTHORIZED.toString(),
-		        "The user is not allowed to access the resource of " + ex.getMessage(),
-		        HttpStatus.UNAUTHORIZED.value());
+		        "The user is not allowed to access the resource of " + ex.getMessage(), HttpStatus.UNAUTHORIZED.value());
 		return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
 	}
 }
