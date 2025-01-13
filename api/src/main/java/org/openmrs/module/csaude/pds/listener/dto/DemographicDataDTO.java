@@ -1,6 +1,13 @@
 package org.openmrs.module.csaude.pds.listener.dto;
 
+import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
+import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
+import org.openmrs.module.csaude.pds.listener.dto.extension.BaseExtensionDTO;
+import org.openmrs.module.csaude.pds.listener.dto.extension.ValueCodeDTO;
+import org.openmrs.module.csaude.pds.listener.dto.extension.ValueDateDTO;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DemographicDataDTO {
@@ -25,7 +32,7 @@ public class DemographicDataDTO {
 	
 	private List<TelecomDTO> telecom;
 	
-	private List<ExtensionDTO> extension;
+	private List<BaseExtensionDTO> extension;
 	
 	public String getResourceType() {
 		return resourceType;
@@ -99,18 +106,23 @@ public class DemographicDataDTO {
 		this.telecom = telecom;
 	}
 	
-	public List<ExtensionDTO> getExtension() {
+	public List<BaseExtensionDTO> getExtension() {
 		return extension;
 	}
 	
-	public void setExtension(List<ExtensionDTO> extension) {
+	public void setExtension(List<BaseExtensionDTO> extension) {
 		this.extension = extension;
 	}
 	
-	public void addPatientState(PatientSateDTO patientSateDTO, String patientStateUrl) {
+	public void addPatientState(PatientSateDTO patientSateDTO) {
 		if (this.extension == null) {
 			this.extension = new ArrayList<>();
 		}
-		this.extension.add(new ExtensionDTO(patientStateUrl, patientSateDTO.getStatePermanenceCode()));
+		
+		String valueCodeUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATA);
+		String valueDateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATE);
+		
+		this.extension.add(new ValueCodeDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
+		this.extension.add(new ValueDateDTO(valueDateUrl, new Date(patientSateDTO.getStateDate().getTime())));
 	}
 }

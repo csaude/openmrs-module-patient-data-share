@@ -139,8 +139,7 @@ public class DemographicDataUtils {
 		
 		PatientSateDTO patientSateDTO = getPatientStateDTO(patient.getPatientId());
 		if (patientSateDTO != null) {
-			String patientStateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATA);
-			demographicDataDTO.addPatientState(patientSateDTO, patientStateUrl);
+			demographicDataDTO.addPatientState(patientSateDTO);
 		}
 		
 		return demographicDataDTO;
