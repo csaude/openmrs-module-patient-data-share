@@ -255,6 +255,13 @@ public class DemographicDataUtils {
 	private static List<IdentifierDTO> getPatientIdentifiers(Patient patient) {
 		List<IdentifierDTO> identifierDTOS = new ArrayList<>();
 		Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
+		
+		// add patient uuid as identifier
+		IdentifierDTO identifierDTO = new IdentifierDTO();
+		identifierDTO.setSystem(PdsConstants.PATIENT_UUID_SYSTEM_VALUE);
+		identifierDTO.setValue(patient.getUuid());
+		identifierDTOS.add(identifierDTO);
+		
 		patientIdentifiers.forEach(patientIdentifier -> identifierDTOS.add(createPatientIdentifierDTO(patientIdentifier)));
 		
 		return identifierDTOS;
