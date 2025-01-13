@@ -2,11 +2,10 @@ package org.openmrs.module.csaude.pds.listener.dto;
 
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
-import org.openmrs.module.csaude.pds.listener.dto.extension.BaseExtensionDTO;
+import org.openmrs.module.csaude.pds.listener.dto.extension.ExtensionDTO;
 import org.openmrs.module.csaude.pds.listener.dto.extension.ValueCodeDTO;
 import org.openmrs.module.csaude.pds.listener.dto.extension.ValueDateDTO;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class DemographicDataDTO {
 	
 	private List<TelecomDTO> telecom;
 	
-	private List<BaseExtensionDTO> extension;
+	private ExtensionDTO extension;
 	
 	public String getResourceType() {
 		return resourceType;
@@ -106,23 +105,23 @@ public class DemographicDataDTO {
 		this.telecom = telecom;
 	}
 	
-	public List<BaseExtensionDTO> getExtension() {
+	public ExtensionDTO getExtension() {
 		return extension;
 	}
 	
-	public void setExtension(List<BaseExtensionDTO> extension) {
+	public void setExtension(ExtensionDTO extension) {
 		this.extension = extension;
 	}
 	
 	public void addPatientState(PatientSateDTO patientSateDTO) {
-		if (this.extension == null) {
-			this.extension = new ArrayList<>();
-		}
 		
-		String valueCodeUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATA);
+		String patientStateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE);
+		String valueCodeUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_CODE);
 		String valueDateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATE);
 		
-		this.extension.add(new ValueCodeDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
-		this.extension.add(new ValueDateDTO(valueDateUrl, new Date(patientSateDTO.getStateDate().getTime())));
+		ExtensionDTO extensionDTO = new ExtensionDTO(patientStateUrl);
+		extensionDTO.getExtension().add(new ValueCodeDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
+		extensionDTO.getExtension().add(new ValueDateDTO(valueDateUrl, new Date(patientSateDTO.getStateDate().getTime())));
+		this.setExtension(extensionDTO);
 	}
 }
