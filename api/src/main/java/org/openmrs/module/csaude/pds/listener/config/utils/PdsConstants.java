@@ -25,4 +25,5 @@ public class PdsConstants {
 	
 	public final static String GP_URL_FOR_PATIENT_STATE_DATE = MODULE_ID + ".patient.state.date.url";
 	
+	public static final String PATIENT_UUID_SYSTEM_VALUE = "https://metadata.epts.e-saude.net/dictionary/patient-identifier/patient-uuid";
 }
