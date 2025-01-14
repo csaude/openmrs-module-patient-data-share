@@ -19,6 +19,10 @@ public class PdsConstants {
 	
 	public final static String GP_CLIENT_NAMES = MODULE_ID + ".patient.client.names";
 	
-	public final static String GP_URL_FOR_PATIENT_STATE_DATA = MODULE_ID + ".patient.state.url";
+	public final static String GP_URL_FOR_PATIENT_STATE = MODULE_ID + ".patient.state.url";
+	
+	public final static String GP_URL_FOR_PATIENT_STATE_CODE = MODULE_ID + ".patient.state.code.url";
+	
+	public final static String GP_URL_FOR_PATIENT_STATE_DATE = MODULE_ID + ".patient.state.date.url";
 	
 }
