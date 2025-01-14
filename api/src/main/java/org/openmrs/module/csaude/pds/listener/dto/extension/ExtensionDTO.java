@@ -1,32 +1,58 @@
 package org.openmrs.module.csaude.pds.listener.dto.extension;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ExtensionDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ExtensionDTO extends BaseExtensionDTO {
 	
-	private String url;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+	private Date valueDate;
 	
-	private List<BaseExtensionDTO> extension;
+	private String valueCode;
+	
+	private List<ExtensionDTO> extension;
 	
 	public ExtensionDTO(String url) {
-		this.url = url;
-		extension = new ArrayList<BaseExtensionDTO>();
+		super(url);
+		this.extension = new ArrayList<ExtensionDTO>();
 	}
 	
-	public String getUrl() {
-		return url;
+	public ExtensionDTO(String url, String valueCode) {
+		super(url);
+		this.valueCode = valueCode;
 	}
 	
-	public void setUrl(String url) {
-		this.url = url;
+	public ExtensionDTO(String url, Date valueDate) {
+		super(url);
+		this.valueDate = valueDate;
 	}
 	
-	public List<BaseExtensionDTO> getExtension() {
+	public Date getValueDate() {
+		return valueDate;
+	}
+	
+	public void setValueDate(Date valueDate) {
+		this.valueDate = valueDate;
+	}
+	
+	public String getValueCode() {
+		return valueCode;
+	}
+	
+	public void setValueCode(String valueCode) {
+		this.valueCode = valueCode;
+	}
+	
+	public List<ExtensionDTO> getExtension() {
 		return extension;
 	}
 	
-	public void setExtension(List<BaseExtensionDTO> extension) {
+	public void setExtension(List<ExtensionDTO> extension) {
 		this.extension = extension;
 	}
 }

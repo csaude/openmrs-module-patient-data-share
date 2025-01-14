@@ -3,8 +3,6 @@ package org.openmrs.module.csaude.pds.listener.dto;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.extension.ExtensionDTO;
-import org.openmrs.module.csaude.pds.listener.dto.extension.ValueCodeDTO;
-import org.openmrs.module.csaude.pds.listener.dto.extension.ValueDateDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -120,8 +118,8 @@ public class DemographicDataDTO {
 		String valueDateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATE);
 		
 		ExtensionDTO extensionDTO = new ExtensionDTO(patientStateUrl);
-		extensionDTO.getExtension().add(new ValueCodeDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
-		extensionDTO.getExtension().add(new ValueDateDTO(valueDateUrl, new Date(patientSateDTO.getStateDate().getTime())));
+		extensionDTO.getExtension().add(new ExtensionDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
+		extensionDTO.getExtension().add(new ExtensionDTO(valueDateUrl, new Date(patientSateDTO.getStateDate().getTime())));
 		this.setExtension(extensionDTO);
 	}
 }

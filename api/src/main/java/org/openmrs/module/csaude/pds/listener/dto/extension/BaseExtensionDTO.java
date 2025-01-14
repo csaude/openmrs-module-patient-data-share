@@ -1,6 +1,6 @@
 package org.openmrs.module.csaude.pds.listener.dto.extension;
 
-public class BaseExtensionDTO {
+public abstract class BaseExtensionDTO {
 	
 	private String url;
 	
