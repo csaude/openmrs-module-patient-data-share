@@ -4,6 +4,7 @@ import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.extension.ExtensionDTO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class DemographicDataDTO {
 	
 	private List<TelecomDTO> telecom;
 	
-	private ExtensionDTO extension;
+	private List<ExtensionDTO> extension;
 	
 	public String getResourceType() {
 		return resourceType;
@@ -103,11 +104,11 @@ public class DemographicDataDTO {
 		this.telecom = telecom;
 	}
 	
-	public ExtensionDTO getExtension() {
+	public List<ExtensionDTO> getExtension() {
 		return extension;
 	}
 	
-	public void setExtension(ExtensionDTO extension) {
+	public void setExtension(List<ExtensionDTO> extension) {
 		this.extension = extension;
 	}
 	
@@ -120,6 +121,10 @@ public class DemographicDataDTO {
 		ExtensionDTO extensionDTO = new ExtensionDTO(patientStateUrl);
 		extensionDTO.getExtension().add(new ExtensionDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
 		extensionDTO.getExtension().add(new ExtensionDTO(valueDateUrl, new Date(patientSateDTO.getStateDate().getTime())));
-		this.setExtension(extensionDTO);
+		
+		if (this.extension == null) {
+			this.extension = new ArrayList<>();
+		}
+		this.extension.add(extensionDTO);
 	}
 }
