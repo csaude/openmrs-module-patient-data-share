@@ -46,6 +46,8 @@ public class DemographicDataQueueDao extends DaoBase {
 		DbSession session = getSession();
 		Criteria criteria = session.createCriteria(PersonAttribute.class, "personAttribute");
 		criteria.add(Restrictions.eq("personAttribute.person.personId", personId));
+		criteria.add(Restrictions.eq("personAttribute.voided", false));
+		
 		criteria.createAlias("personAttribute.attributeType", "personAttributeType");
 		criteria.add(Restrictions.eq("personAttributeType.uuid", personAttributeTypeUuid));
 		
