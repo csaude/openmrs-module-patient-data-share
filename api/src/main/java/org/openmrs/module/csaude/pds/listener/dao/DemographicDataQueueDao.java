@@ -103,7 +103,7 @@ public class DemographicDataQueueDao extends DaoBase {
 			
 			if (demographicDataOffset.isCreated()) {
 				
-				Query query = session.createQuery(
+				Query query = (Query) session.createQuery(
 				    "UPDATE DemographicDataOffset SET firstRead=:firstRead, lastRead=:lastRead WHERE id = :id");
 				query.setParameter("firstRead", demographicDataOffset.getFirstRead());
 				query.setParameter("lastRead", demographicDataOffset.getLastRead());
@@ -129,9 +129,9 @@ public class DemographicDataQueueDao extends DaoBase {
 		Path sqlPath = new ClassPathResource("queries/patient_state.sql").getFile().toPath();
 		String sql = Files.readString(sqlPath);
 		
-		var query = session.createSQLQuery(sql);
+		Query query = (Query) session.createSQLQuery(sql);
 		query.setParameter("patientId", patientId);
-		List<Object[]> rel = query.list();
+		List<Object[]> rel = query.getResultList();
 		return PdsUtils.getPatientSates(rel);
 	}
 }

@@ -1,11 +1,11 @@
 package org.openmrs.module.csaude.pds.listener.entity;
 
-import com.sun.istack.NotNull;
 import org.openmrs.module.csaude.pds.listener.entity.core.LifeCycle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "demographic_data_queue")

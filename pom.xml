@@ -40,8 +40,8 @@
     </modules>
 
     <properties>
-        <javaCompilerVersion>11</javaCompilerVersion>
-        <openmrsPlatformVersion>2.6.11</openmrsPlatformVersion>
+        <javaCompilerVersion>8</javaCompilerVersion>
+        <openmrsPlatformVersion>2.3.3</openmrsPlatformVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <debeziumVersion>1.0.1-SNAPSHOT</debeziumVersion>
         <httpclientVersion>4.5.13</httpclientVersion>
@@ -130,6 +130,16 @@
                 <version>${openmrsPlatformVersion}</version>
                 <type>pom</type>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.17.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
