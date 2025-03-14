@@ -1,6 +1,7 @@
 package org.openmrs.module.csaude.pds.listener.dao;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -15,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
-import javax.persistence.Query;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
@@ -103,7 +104,7 @@ public class DemographicDataQueueDao extends DaoBase {
 			
 			if (demographicDataOffset.isCreated()) {
 				
-				Query query = (Query) session.createQuery(
+				Query query = session.createQuery(
 				    "UPDATE DemographicDataOffset SET firstRead=:firstRead, lastRead=:lastRead WHERE id = :id");
 				query.setParameter("firstRead", demographicDataOffset.getFirstRead());
 				query.setParameter("lastRead", demographicDataOffset.getLastRead());
@@ -127,11 +128,24 @@ public class DemographicDataQueueDao extends DaoBase {
 	public List<PatientSateDTO> fetchPatientState(Integer patientId) throws IOException {
 		DbSession session = getSession();
 		Path sqlPath = new ClassPathResource("queries/patient_state.sql").getFile().toPath();
-		String sql = Files.readString(sqlPath);
+		String sql = readFileContent(sqlPath.toFile().getPath());
 		
-		Query query = (Query) session.createSQLQuery(sql);
+		Query query = session.createSQLQuery(sql);
 		query.setParameter("patientId", patientId);
-		List<Object[]> rel = query.getResultList();
+		List<Object[]> rel = query.list();
 		return PdsUtils.getPatientSates(rel);
+	}
+	
+	public static String readFileContent(String filePath) throws IOException {
+		StringBuilder content = new StringBuilder();
+		
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			
+			while ((line = reader.readLine()) != null) {
+				content.append(line).append(System.lineSeparator());
+			}
+		}
+		return content.toString();
 	}
 }

@@ -82,13 +82,13 @@ public class PdsUtils {
 		List<PatientSateDTO> patientSates = new ArrayList<>();
 		if (states != null) {
 			states.forEach(state -> {
-				BigInteger PatientId = state[0] != null ? (BigInteger) state[0] : null;
+				Integer PatientId = state[0] != null ? (Integer) state[0] : null;
 				Timestamp stateDate = state[1] != null ? (Timestamp) state[1] : null;
-				BigInteger permanenceStateId = state[2] != null ? (BigInteger) state[2] : null;
+				Integer permanenceStateId = state[2] != null ? (Integer) state[2] : null;
 				String permanenceStateCode = state[3] != null ? (String) state[3] : null;
 				
-				PatientSateDTO patientSate = new PatientSateDTO(PatientId, stateDate, permanenceStateId,
-				        permanenceStateCode);
+				PatientSateDTO patientSate = new PatientSateDTO(BigInteger.valueOf(PatientId), stateDate,
+				        BigInteger.valueOf(permanenceStateId), permanenceStateCode);
 				patientSates.add(patientSate);
 			});
 		}

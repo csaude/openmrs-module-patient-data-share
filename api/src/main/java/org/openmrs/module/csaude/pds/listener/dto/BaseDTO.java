@@ -1,11 +1,11 @@
 package org.openmrs.module.csaude.pds.listener.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class BaseDTO {
 	
 	//patient uuid
-	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 	private String id;
 	
 	public String getId() {
