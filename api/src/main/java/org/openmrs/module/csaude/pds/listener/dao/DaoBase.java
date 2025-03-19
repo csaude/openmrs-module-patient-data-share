@@ -15,7 +15,7 @@ public class DaoBase {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	
 	public static <T> T executeWithTransaction(SessionFactory sessionFactory, HibernateTransactionCallback<T> callback) {
 		Transaction transaction = null;
 		try (Session session = sessionFactory.openSession()) {

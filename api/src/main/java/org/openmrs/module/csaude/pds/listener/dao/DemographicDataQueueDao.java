@@ -84,7 +84,7 @@ public class DemographicDataQueueDao extends DaoBase {
 			Root<Patient> patient = patientCriteriaQuery.from(Patient.class);
 			patient.fetch("identifiers", JoinType.LEFT).fetch("identifierType", JoinType.LEFT);
 			patientCriteriaQuery.select(patient).distinct(true).where(patient.get("patientId").in(patientIds));
-
+			
 			List<Patient> patientList = session.createQuery(patientCriteriaQuery).getResultList();
 			return new HashSet<>(patientList);
 			
