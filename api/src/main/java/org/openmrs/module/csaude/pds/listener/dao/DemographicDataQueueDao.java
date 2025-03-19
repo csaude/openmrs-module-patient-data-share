@@ -1,7 +1,6 @@
 package org.openmrs.module.csaude.pds.listener.dao;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
@@ -15,6 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -76,11 +79,15 @@ public class DemographicDataQueueDao extends DaoBase {
 	public Set<Patient> getPatientsByIds(List<Integer> patientIds) {
 		return executeWithTransaction(sessionFactory, session -> {
 			
-			Criteria criteria = session.createCriteria(Patient.class, "patient");
-			criteria.add(Restrictions.in("patient.patientId", patientIds));
-			criteria.setFetchMode("identifiers", FetchMode.JOIN);
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Patient> patientCriteriaQuery = criteriaBuilder.createQuery(Patient.class);
+			Root<Patient> patient = patientCriteriaQuery.from(Patient.class);
+			patient.fetch("identifiers", JoinType.LEFT).fetch("identifierType", JoinType.LEFT);
+			patientCriteriaQuery.select(patient).distinct(true).where(patient.get("patientId").in(patientIds));
+
+			List<Patient> patientList = session.createQuery(patientCriteriaQuery).getResultList();
+			return new HashSet<>(patientList);
 			
-			return new HashSet<>(criteria.list());
 		});
 		
 	}
