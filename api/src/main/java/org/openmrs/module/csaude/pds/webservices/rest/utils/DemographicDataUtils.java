@@ -120,7 +120,7 @@ public class DemographicDataUtils {
 	private static DemographicDataDTO createDemographicDataDTO(Patient patient) {
 		DemographicDataDTO demographicDataDTO = new DemographicDataDTO();
 		demographicDataDTO.setResourceType(DemographicDataDTO.RESOURCE_TYPE);
-		demographicDataDTO.setBirthDate(patient.getBirthdate().toString());
+		demographicDataDTO.setBirthDate(patient.getBirthdate() != null ? patient.getBirthdate().toString() : null);
 		demographicDataDTO.setDeceasedBoolean(patient.getDead());
 		demographicDataDTO.setGender(patient.getGender());
 		demographicDataDTO.setActive(patient.getVoided());
