@@ -327,7 +327,7 @@ from
 			 	from person p where p.dead = 1 and p.person_id = :patientId 
 			) inner_obito 
 		) obito 
-		inner join 
+		letf join
 		( 
 			select max(p.patient_id) patient_id, max(e.encounter_datetime) encounter_datetime 
 	 		from patient p 
@@ -335,7 +335,7 @@ from
 	 			inner join patient_identifier pid on pid.location_id=e.location_id
 	 		where p.voided = 0 and e.voided = 0 and e.encounter_type in (18,6,9) and p.patient_id = :patientId 
 		) consultaOuARV on obito.patient_id = consultaOuARV.patient_id 
-		where consultaOuARV.encounter_datetime <= obito.data_obito 
+		where consultaOuARV.encounter_datetime <= obito.data_obito or consultaOuARV.encounter_datetime is null
 	) obitos
 	
 	# END _OBITO
