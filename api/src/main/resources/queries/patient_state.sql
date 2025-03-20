@@ -327,7 +327,7 @@ from
 			 	from person p where p.dead = 1 and p.person_id = :patientId 
 			) inner_obito 
 		) obito 
-		letf join
+		left join
 		( 
 			select max(p.patient_id) patient_id, max(e.encounter_datetime) encounter_datetime 
 	 		from patient p 
