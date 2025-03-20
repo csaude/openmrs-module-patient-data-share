@@ -1,9 +1,11 @@
 package org.openmrs.module.csaude.pds.listener.config.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.openmrs.api.APIAuthenticationException;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
+import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceUnauthorizedException;
 import org.openmrs.module.debezium.DatabaseEvent;
 import org.openmrs.module.debezium.DatabaseOperation;
 
@@ -57,12 +59,18 @@ public class PdsUtils {
 	 * @return the global property value
 	 */
 	public static String getGlobalPropertyValue(String gpName) {
-		String value = Context.getAdministrationService().getGlobalProperty(gpName);
-		if (StringUtils.isBlank(value)) {
-			throw new APIException("No value set for the global property named: " + gpName);
-		}
 		
-		return value;
+		try {
+			String value = Context.getAdministrationService().getGlobalProperty(gpName);
+			if (StringUtils.isBlank(value)) {
+				throw new APIException("No value set for the global property named: " + gpName);
+			}
+			
+			return value;
+		}
+		catch (APIAuthenticationException e) {
+			throw new ResourceUnauthorizedException("");
+		}
 	}
 	
 	public static String getPatientIdentifierUri(String patientIdentifierUuid) {

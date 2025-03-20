@@ -10,12 +10,13 @@
     <context:component-scan base-package="org.openmrs.module.csaude.pds" />
 
 
-
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="dbSessionFactory" />
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
     </bean>
 
-    <bean id="dbSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"/>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
 
     <bean id="serviceInterceptors" class="org.springframework.aop.interceptor.SimpleTraceInterceptor"/>
 
@@ -31,7 +32,7 @@
                 <property name="dao">
                     <bean class="org.openmrs.module.csaude.pds.listener.dao.DemographicDataQueueDao">
                         <property name="sessionFactory">
-                            <ref bean="dbSessionFactory" />
+                            <ref bean="sessionFactory" />
                         </property>
                     </bean>
                 </property>
