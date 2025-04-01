@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.openmrs.module.csaude</groupId>
         <artifactId>pds</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>pds-api</artifactId>
