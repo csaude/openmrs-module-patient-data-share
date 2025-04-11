@@ -22,12 +22,18 @@ import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
+import org.openmrs.module.csaude.pds.task.PdsIntegrationTask;
+import org.openmrs.scheduler.SchedulerException;
+import org.openmrs.scheduler.SchedulerService;
+import org.openmrs.scheduler.TaskDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Date;
 
 import static org.openmrs.util.OpenmrsUtil.getApplicationDataDirectory;
 
@@ -46,6 +52,8 @@ public class PdsActivator extends BaseModuleActivator {
 	protected static final String LAYOUT = "%-5p %t - %C{1}.%M(%L) |%d{ISO8601}| %m%n";
 	
 	protected static final String LOG_FILE_PATTERN = LOG_FILE + ".%d{yyyy-MM-dd}-%i";
+	
+	private static final String TASK_NAME = "PATIENT DATA SHARE TASK";
 	
 	/**
 	 * @see BaseModuleActivator#started()
@@ -77,6 +85,8 @@ public class PdsActivator extends BaseModuleActivator {
 			pdsAppender.start();
 			cfg.addAppender(pdsAppender);
 			context.updateLoggers();
+			
+			this.registerTask();
 		}
 		catch (Exception e) {
 			throw new APIException(e);
@@ -103,6 +113,34 @@ public class PdsActivator extends BaseModuleActivator {
 	
 	protected String getPdsLoggerName() {
 		return getClass().getPackage().getName();
+	}
+	
+	private void registerTask() {
+		
+		try {
+			SchedulerService schedulerService = Context.getService(SchedulerService.class);
+			TaskDefinition taskDefinition = new TaskDefinition();
+			taskDefinition.setName(TASK_NAME);
+			taskDefinition.setTaskClass(PdsIntegrationTask.class.getName());
+			taskDefinition.setStartTime(new Date());
+			taskDefinition.setRepeatInterval(10L);
+			taskDefinition.setStartOnStartup(true);
+			taskDefinition.setDescription("A task to call debezium event queue service");
+			
+			// Check if exists a task running in order to avoid duplicates
+			TaskDefinition existingTask = schedulerService.getTaskByName(taskDefinition.getName());
+			if (existingTask == null) {
+				schedulerService.saveTaskDefinition(taskDefinition);
+				schedulerService.scheduleTask(taskDefinition);
+				log.info("Scheduled task registered and started: {}", taskDefinition.getName());
+			} else {
+				log.info("Task already registered: {}", taskDefinition.getName());
+			}
+		}
+		catch (SchedulerException e) {
+			log.error("Failed to register scheduled task", e);
+		}
+		
 	}
 	
 }

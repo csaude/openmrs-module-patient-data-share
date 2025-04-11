@@ -144,6 +144,20 @@
 			explanations of these values please refer to the official debezium documentation for the MySQL connector.
 		</description>
 	</globalProperty>
+	<globalProperty>
+		<property>debezium.event.default.count</property>
+		<description>
+			Specifies the default value to be returned by the services
+		</description>
+		<defaultValue>50</defaultValue>
+	</globalProperty>
+	<globalProperty>
+		<property>debezium.event.application.name</property>
+		<description>
+			Specifies the applications names and the desirable tables to be watch and shared with the application
+			Ex: PDS: person, person_name,...;MPI: person, person_name, ...
+		</description>
+	</globalProperty>
 	<!-- Global properties of debezium -->
 
 </module>
