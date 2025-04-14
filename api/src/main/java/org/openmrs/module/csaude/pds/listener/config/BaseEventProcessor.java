@@ -1,14 +1,14 @@
 package org.openmrs.module.csaude.pds.listener.config;
 
-import org.openmrs.module.debezium.DatabaseEvent;
+import org.openmrs.module.debezium.entity.DebeziumEventQueue;
 
 public abstract class BaseEventProcessor {
 	
 	/**
 	 * Called to process an event
 	 *
-	 * @param event {@link DatabaseEvent} object
+	 * @param event {@link DebeziumEventQueue} object
 	 */
-	public abstract void process(DatabaseEvent event);
+	public abstract void process(DebeziumEventQueue event);
 	
 }

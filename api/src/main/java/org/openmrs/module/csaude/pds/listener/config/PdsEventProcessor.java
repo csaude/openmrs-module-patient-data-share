@@ -6,7 +6,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.openmrs.module.csaude.pds.listener.service.DemographicDataQueueService;
-import org.openmrs.module.debezium.DatabaseEvent;
+import org.openmrs.module.debezium.entity.DebeziumEventQueue;
 import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class PdsEventProcessor extends BaseEventProcessor {
 	private static final Logger logger = LoggerFactory.getLogger(PdsEventProcessor.class);
 	
 	@Override
-	public void process(DatabaseEvent event) {
+	public void process(DebeziumEventQueue event) {
 		logger.info("Processing database event -> " + event);
 		final long start = System.currentTimeMillis();
 		DemographicDataQueueService demographicDataQueueService = Context.getService(DemographicDataQueueService.class);

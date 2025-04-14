@@ -1,7 +1,7 @@
 package org.openmrs.module.csaude.pds;
 
 import org.openmrs.module.BaseModuleActivator;
-import org.openmrs.module.debezium.DebeziumActivator;
+import org.openmrs.module.debezium.config.DebeziumActivator;
 
 public class PdsDebeziumActivator extends BaseModuleActivator {
 	
