@@ -27,15 +27,15 @@ public class PdsIntegrationTask extends AbstractTask {
 			
 			boolean keepFetching = true;
 			eventProcessor = new PdsEventProcessor();
-
+			
 			while (keepFetching) {
 				Set<DebeziumEventQueue> eventQueueSet = eventQueueService.getApplicationEvents(APPLICATION_NAME);
-
+				
 				if (eventQueueSet.isEmpty()) {
 					keepFetching = Boolean.FALSE;
 				} else {
 					eventQueueSet.forEach((eventQueue) -> {
-                        log.debug("Received database event -> {}", eventQueue);
+						log.debug("Received database event -> {}", eventQueue);
 						eventProcessor.process(eventQueue);
 					});
 					eventQueueService.commitEventQueue(APPLICATION_NAME);

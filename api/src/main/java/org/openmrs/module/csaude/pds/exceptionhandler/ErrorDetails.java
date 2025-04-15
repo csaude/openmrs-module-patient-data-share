@@ -1,4 +1,4 @@
-package org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler;
+package org.openmrs.module.csaude.pds.exceptionhandler;
 
 public class ErrorDetails {
 	
