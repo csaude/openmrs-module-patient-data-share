@@ -1,7 +1,6 @@
 package org.openmrs.module.csaude.pds.listener.dto;
 
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
-import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.extension.ExtensionDTO;
 
 import java.util.ArrayList;
@@ -114,9 +113,9 @@ public class DemographicDataDTO {
 	
 	public void addPatientState(PatientSateDTO patientSateDTO) {
 		
-		String patientStateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE);
-		String valueCodeUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_CODE);
-		String valueDateUrl = PdsUtils.getGlobalPropertyValue(PdsConstants.GP_URL_FOR_PATIENT_STATE_DATE);
+		String patientStateUrl = PdsConstants.URL_FOR_PATIENT_STATE;
+		String valueCodeUrl = PdsConstants.URL_FOR_PATIENT_STATE_CODE;
+		String valueDateUrl = PdsConstants.URL_FOR_PATIENT_STATE_DATE;
 		
 		ExtensionDTO extensionDTO = new ExtensionDTO(patientStateUrl);
 		extensionDTO.getExtension().add(new ExtensionDTO(valueCodeUrl, patientSateDTO.getStatePermanenceCode()));
