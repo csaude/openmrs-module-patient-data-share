@@ -16,6 +16,10 @@
     <name>PDS Module OMOD</name>
     <description>OMOD project for PDS Module</description>
 
+    <properties>
+        <moduleName>patient-data-share</moduleName>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
@@ -60,7 +64,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
+        <finalName>${moduleName}-${project.parent.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
