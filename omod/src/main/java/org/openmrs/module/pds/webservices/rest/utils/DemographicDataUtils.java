@@ -1,6 +1,6 @@
-package org.openmrs.module.csaude.pds.webservices.rest.utils;
+package org.openmrs.module.pds.webservices.rest.utils;
 
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.Person;
@@ -23,7 +23,7 @@ import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataOffset;
 import org.openmrs.module.csaude.pds.listener.entity.DemographicDataQueue;
 import org.openmrs.module.csaude.pds.listener.service.DemographicDataQueueService;
-import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceNotFoundException;
+import org.openmrs.module.csaude.pds.exceptionhandler.ResourceNotFoundException;
 import org.openmrs.util.PrivilegeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

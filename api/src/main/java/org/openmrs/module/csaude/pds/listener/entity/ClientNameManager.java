@@ -1,9 +1,9 @@
 package org.openmrs.module.csaude.pds.listener.entity;
 
 import org.apache.logging.log4j.util.Strings;
+import org.openmrs.module.csaude.pds.exceptionhandler.ResourceMissingParameterException;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
-import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceMissingParameterException;
 
 import java.util.Arrays;
 import java.util.HashSet;
