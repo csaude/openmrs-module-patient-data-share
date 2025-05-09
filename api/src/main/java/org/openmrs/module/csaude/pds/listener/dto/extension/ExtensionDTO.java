@@ -1,6 +1,5 @@
 package org.openmrs.module.csaude.pds.listener.dto.extension;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.openmrs.module.csaude.pds.webservices.rest.utils.DemographicDataUtils;
 
