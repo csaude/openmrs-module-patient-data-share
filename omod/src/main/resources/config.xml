@@ -56,6 +56,7 @@
 			Specifies the client names to benefit from resources exposed by the application. The list has to be separated by ','.
 			Ex: CLIENT_1,CLIENT_2
 		</description>
+		<defaultValue>iDMED</defaultValue>
 	</globalProperty>
 	<globalProperty>
 		<property>${project.parent.artifactId}.patient.state.url</property>
