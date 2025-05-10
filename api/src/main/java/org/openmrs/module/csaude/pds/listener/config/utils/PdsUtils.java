@@ -17,8 +17,10 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -129,5 +131,14 @@ public class PdsUtils {
 			});
 		}
 		return patientSates;
+	}
+
+
+	public static String convertTimeStamp(Date valueDate) {
+		if (valueDate != null) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			return formatter.format(valueDate);
+		}
+		return null;
 	}
 }
