@@ -132,8 +132,7 @@ public class PdsUtils {
 		}
 		return patientSates;
 	}
-
-
+	
 	public static String convertTimeStamp(Date valueDate) {
 		if (valueDate != null) {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
