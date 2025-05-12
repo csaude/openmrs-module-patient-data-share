@@ -1,7 +1,7 @@
 package org.openmrs.module.csaude.pds.listener.dto.extension;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.openmrs.module.csaude.pds.webservices.rest.utils.DemographicDataUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +10,7 @@ import java.util.List;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ExtensionDTO extends BaseExtensionDTO {
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
-	private Date valueDate;
+	private String valueDate;
 	
 	private String valueCode;
 	
@@ -29,14 +28,14 @@ public class ExtensionDTO extends BaseExtensionDTO {
 	
 	public ExtensionDTO(String url, Date valueDate) {
 		super(url);
-		this.valueDate = valueDate;
+		this.valueDate = DemographicDataUtils.convertTimeStamp(valueDate);
 	}
 	
-	public Date getValueDate() {
+	public String getValueDate() {
 		return valueDate;
 	}
 	
-	public void setValueDate(Date valueDate) {
+	public void setValueDate(String valueDate) {
 		this.valueDate = valueDate;
 	}
 	
