@@ -29,7 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -353,5 +355,13 @@ public class DemographicDataUtils {
 	
 	public enum NameType {
 		OFFICIAL
+	}
+	
+	public static String convertTimeStamp(Date valueDate) {
+		if (valueDate != null) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			return formatter.format(valueDate);
+		}
+		return null;
 	}
 }

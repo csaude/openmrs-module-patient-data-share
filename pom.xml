@@ -7,7 +7,7 @@
 
     <groupId>org.openmrs.module.csaude</groupId>
     <artifactId>pds</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     <name>PDS Module</name>
     <description>
