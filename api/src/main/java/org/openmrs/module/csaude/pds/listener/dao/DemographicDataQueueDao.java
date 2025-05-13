@@ -64,7 +64,7 @@ public class DemographicDataQueueDao extends DaoBase {
 			Criteria criteria = session.createCriteria(DemographicDataQueue.class);
 			
 			if (demographicDataOffset != null) {
-				criteria.add(Restrictions.gt("id", demographicDataOffset.getFirstRead()));
+				criteria.add(Restrictions.ge("id", demographicDataOffset.getFirstRead()));
 			}
 			if (count != null) {
 				criteria.setMaxResults(count);
