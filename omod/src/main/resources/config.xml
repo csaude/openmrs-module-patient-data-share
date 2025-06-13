@@ -56,6 +56,7 @@
 			Specifies the client names to benefit from resources exposed by the application. The list has to be separated by ','.
 			Ex: CLIENT_1,CLIENT_2
 		</description>
+		<defaultValue>iDMED</defaultValue>
 	</globalProperty>
 	<globalProperty>
 		<property>${project.parent.artifactId}.patient.state.url</property>
@@ -142,6 +143,20 @@
 			An optional MySQL specific property that specifies whether to use an encrypted connection. Possible settings
 			are: disabled, preferred, required, verify_ca, verify_identity. The default is preferred, for more detailed
 			explanations of these values please refer to the official debezium documentation for the MySQL connector.
+		</description>
+	</globalProperty>
+	<globalProperty>
+		<property>debezium.event.default.count</property>
+		<description>
+			Specifies the default value to be returned by the services
+		</description>
+		<defaultValue>50</defaultValue>
+	</globalProperty>
+	<globalProperty>
+		<property>debezium.event.application.name</property>
+		<description>
+			Specifies the applications names and the desirable tables to be watch and shared with the application
+			Ex: PDS: person, person_name,...;MPI: person, person_name, ...
 		</description>
 	</globalProperty>
 	<!-- Global properties of debezium -->

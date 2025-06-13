@@ -1,4 +1,4 @@
-package org.openmrs.module.csaude.pds.webservices.rest.controller;
+package org.openmrs.module.pds.webservices.rest.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.User;
@@ -7,10 +7,10 @@ import org.openmrs.module.csaude.pds.listener.config.utils.PdsConstants;
 import org.openmrs.module.csaude.pds.listener.config.utils.PdsUtils;
 import org.openmrs.module.csaude.pds.listener.dto.ResponseDataDTO;
 import org.openmrs.module.csaude.pds.listener.entity.ClientNameManager;
-import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceMissingParameterException;
-import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceNotAllowedException;
-import org.openmrs.module.csaude.pds.webservices.rest.exceptionhandler.ResourceUnauthorizedException;
-import org.openmrs.module.csaude.pds.webservices.rest.utils.DemographicDataUtils;
+import org.openmrs.module.csaude.pds.exceptionhandler.ResourceMissingParameterException;
+import org.openmrs.module.csaude.pds.exceptionhandler.ResourceNotAllowedException;
+import org.openmrs.module.csaude.pds.exceptionhandler.ResourceUnauthorizedException;
+import org.openmrs.module.pds.webservices.rest.utils.DemographicDataUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

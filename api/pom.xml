@@ -7,12 +7,12 @@
     <parent>
         <groupId>org.openmrs.module.csaude</groupId>
         <artifactId>pds</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>pds-api</artifactId>
     <packaging>jar</packaging>
-    <name>PDS Module API</name>
+    <name>Patient Data Share Module API</name>
     <description>API project for PDS Module</description>
 
     <dependencies>
