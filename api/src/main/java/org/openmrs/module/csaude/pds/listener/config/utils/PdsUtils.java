@@ -67,7 +67,7 @@ public class PdsUtils {
 	
 	public static String getPatientIdentifierUri(String patientIdentifierUuid) {
 		Map idSystemMap = new HashMap();
-		String maps = getGlobalPropertyValue(PdsConstants.GP_IDENTIFIER_TYPE_SYSTEM_MAP);
+		String maps = PdsConstants.IDENTIFIER_TYPE_SYSTEM_MAP;
 		if (StringUtils.isNotBlank(maps)) {
 			for (String map : maps.trim().split(",")) {
 				String[] details = map.trim().split("\\^");
