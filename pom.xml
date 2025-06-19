@@ -9,7 +9,7 @@
     <artifactId>pds</artifactId>
     <version>1.1.0</version>
     <packaging>pom</packaging>
-    <name>PDS Module</name>
+    <name>Patient Data Share Module</name>
     <description>
         This module allow the sharing of newly created or Updated Patients. The sharing is done trought endpoints
     </description>
