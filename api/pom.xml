@@ -12,8 +12,8 @@
 
     <artifactId>pds-api</artifactId>
     <packaging>jar</packaging>
-    <name>PDS Module API</name>
-    <description>API project for PDS Module</description>
+    <name>Patient Data Share Module API</name>
+    <description>API project for Patient Data Share Module</description>
 
     <dependencies>
         <dependency>
