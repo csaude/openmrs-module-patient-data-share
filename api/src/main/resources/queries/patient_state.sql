@@ -1,4 +1,3 @@
-
 SELECT 	patient_id, 
 		state_date, 
 		CASE estado_permanencia_code
@@ -12,9 +11,9 @@ SELECT 	patient_id,
 		END AS estado_permanencia_id,
 		estado_permanencia_code,
 		src		
-FROM (	select max(max_state.patient_id) patient_id, 
-			   max(max_state.state_date) state_date, 
-				CASE max(ps.state)  
+FROM (	select pg.patient_id, 
+			   ps.start_date  state_date, 
+				CASE ps.state  
 					 WHEN 6 THEN 'ACTIVO'
 					 WHEN 7 THEN 'TRANSFERIDO_PARA'
 					 WHEN 29 THEN 'TRANSFERIDO_DE'
@@ -23,7 +22,7 @@ FROM (	select max(max_state.patient_id) patient_id,
 					 WHEN 10 THEN 'OBITO'
 					 ELSE null 
 				END AS estado_permanencia_code,
-				CONCAT('patient_state(', max(ps.state), ')') AS src
+				CONCAT('patient_state(', ps.state, ')') AS src
 		from (	select max(pg.patient_id) patient_id, max(ps.start_date) state_date 
 				from  patient_program pg inner join patient_state ps on pg.patient_program_id=ps.patient_program_id
 				where pg.voided = 0 and ps.voided = 0 and pg.program_id = 2 and pg.patient_id = :patient_id
@@ -33,8 +32,8 @@ FROM (	select max(max_state.patient_id) patient_id,
 
 		union
 
-		select 	max_master_card.patient_id,
-				max_master_card.state_date,
+		select 	e.patient_id,
+				e.encounter_datetime state_date,
 				CASE state_of_permanence.value_coded
 					WHEN 6270 THEN  'ACTIVO'
 					 WHEN 1706 THEN 'TRANSFERIDO_PARA'
@@ -87,4 +86,4 @@ FROM (	select max(max_state.patient_id) patient_id,
 				death_date state_date, 'OBITO' estado_permanencia_code,
 				CONCAT('demografic(',  p.dead, ')') AS src
 		from person p where p.dead = 1 and p.person_id = :patient_id 	
-) ALL_STATES limit 1
+) ALL_STATES limit 2
