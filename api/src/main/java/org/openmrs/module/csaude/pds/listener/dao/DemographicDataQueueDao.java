@@ -62,7 +62,7 @@ public class DemographicDataQueueDao extends DaoBase {
 		return executeWithTransaction(sessionFactory, session -> {
 			
 			Criteria criteria = session.createCriteria(DemographicDataQueue.class);
-
+			
 			if (demographicDataOffset != null) {
 				if (demographicDataOffset.getLastRead() != null) {
 					criteria.add(Restrictions.ge("id", demographicDataOffset.getFirstRead()));
@@ -70,7 +70,7 @@ public class DemographicDataQueueDao extends DaoBase {
 					criteria.add(Restrictions.gt("id", demographicDataOffset.getFirstRead()));
 				}
 			}
-
+			
 			if (count != null) {
 				criteria.setMaxResults(count);
 			}
@@ -143,7 +143,7 @@ public class DemographicDataQueueDao extends DaoBase {
 			String sql = Files.readString(sqlPath);
 			
 			var query = session.createSQLQuery(sql);
-			query.setParameter("patientId", patientId);
+			query.setParameter("patient_id", patientId);
 			List<Object[]> rel = query.list();
 			return PdsUtils.getPatientSates(rel);
 		});
