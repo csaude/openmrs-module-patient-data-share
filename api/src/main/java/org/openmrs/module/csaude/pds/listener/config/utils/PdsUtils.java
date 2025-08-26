@@ -7,7 +7,6 @@ import org.openmrs.module.csaude.pds.listener.dto.PatientSateDTO;
 import org.openmrs.module.debezium.DatabaseEvent;
 import org.openmrs.module.debezium.DatabaseOperation;
 
-import java.math.BigInteger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
@@ -84,11 +83,15 @@ public class PdsUtils {
 			states.forEach(state -> {
 				Integer PatientId = state[0] != null ? (Integer) state[0] : null;
 				Timestamp stateDate = state[1] != null ? (Timestamp) state[1] : null;
-				Integer permanenceStateId = state[2] != null ? (Integer) state[2] : null;
+				String permanenceStateId = state[2] != null ? (String) state[2] : null;
 				String permanenceStateCode = state[3] != null ? (String) state[3] : null;
 				
-				PatientSateDTO patientSate = new PatientSateDTO(BigInteger.valueOf(PatientId), stateDate,
-				        BigInteger.valueOf(permanenceStateId), permanenceStateCode);
+				Integer permanenceId = null;
+				if (permanenceStateId != null) {
+					permanenceId = Integer.valueOf(permanenceStateId);
+				}
+				
+				PatientSateDTO patientSate = new PatientSateDTO(PatientId, stateDate, permanenceId, permanenceStateCode);
 				patientSates.add(patientSate);
 			});
 		}

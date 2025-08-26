@@ -1,20 +1,18 @@
 package org.openmrs.module.csaude.pds.listener.dto;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 public class PatientSateDTO {
 	
-	private BigInteger patientId;
+	private Integer patientId;
 	
 	private Timestamp stateDate;
 	
-	private BigInteger statePermanenceId;
+	private Integer statePermanenceId;
 	
 	private String statePermanenceCode;
 	
-	public PatientSateDTO(BigInteger patientId, Timestamp stateData, BigInteger statePermanenceId,
-	    String statePermanenceCode) {
+	public PatientSateDTO(Integer patientId, Timestamp stateData, Integer statePermanenceId, String statePermanenceCode) {
 		this.patientId = patientId;
 		this.stateDate = stateData;
 		this.statePermanenceId = statePermanenceId;
@@ -24,11 +22,11 @@ public class PatientSateDTO {
 	public PatientSateDTO() {
 	}
 	
-	public BigInteger getPatientId() {
+	public Integer getPatientId() {
 		return patientId;
 	}
 	
-	public void setPatientId(BigInteger patientId) {
+	public void setPatientId(Integer patientId) {
 		this.patientId = patientId;
 	}
 	
@@ -40,11 +38,11 @@ public class PatientSateDTO {
 		this.stateDate = stateData;
 	}
 	
-	public BigInteger getStatePermanenceId() {
+	public Integer getStatePermanenceId() {
 		return statePermanenceId;
 	}
 	
-	public void setStatePermanenceId(BigInteger statePermanenceId) {
+	public void setStatePermanenceId(Integer statePermanenceId) {
 		this.statePermanenceId = statePermanenceId;
 	}
 	
