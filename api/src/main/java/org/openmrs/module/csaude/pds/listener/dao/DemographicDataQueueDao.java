@@ -136,7 +136,7 @@ public class DemographicDataQueueDao extends DaoBase {
 		String sql = readFileContent(sqlPath.toFile().getPath());
 		
 		Query query = session.createSQLQuery(sql);
-		query.setParameter("patientId", patientId);
+		query.setParameter("patient_id", patientId);
 		List<Object[]> rel = query.list();
 		return PdsUtils.getPatientSates(rel);
 	}
