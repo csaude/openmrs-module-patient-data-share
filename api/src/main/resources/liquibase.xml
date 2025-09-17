@@ -57,7 +57,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
         </createTable>
     </changeSet>
 
-    <changeSet author="dchirinda" id="20250327-1100">
+    <changeSet author="dchirinda" id="20250917-1100">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="debezium_event_queue"/>
@@ -100,7 +100,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
         </createTable>
     </changeSet>
 
-    <changeSet author="dchirinda" id="20250401-1100">
+    <changeSet author="dchirinda" id="20250917-1101">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="debezium_event_queue_offset"/>
