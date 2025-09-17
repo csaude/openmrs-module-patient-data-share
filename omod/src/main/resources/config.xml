@@ -158,7 +158,15 @@
 			Specifies the applications names and the desirable tables to be watch and shared with the application
 			Ex: PDS: person, person_name,...;MPI: person, person_name, ...
 		</description>
+        <defaultValue>PDS:person, patient,person_name,person_address,patient_identifier,person_attribute;</defaultValue>
 	</globalProperty>
+    <globalProperty>
+        <property>debezium.binlog.prune.active</property>
+        <description>
+            Flag to activate or deactivate the pruner for processed binlog
+        </description>
+        <defaultValue>false</defaultValue>
+    </globalProperty>
 	<!-- Global properties of debezium -->
 
 </module>
